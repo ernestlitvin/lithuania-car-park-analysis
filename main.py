@@ -30,7 +30,7 @@ data_types = {
     'SPALVA': 'category',
     'SAVIVALDYBE': 'category'
 }
-file_path = "Atviri_TP_parko_duomenys.csv"
+file_path = 'Atviri_TP_parko_duomenys.csv'
 df_cars = pd.read_csv(
     file_path,
     usecols = cols_to_use,
@@ -53,11 +53,15 @@ lt_cols = {
 df_cars = df_cars.rename(columns=lt_cols)
 
 # Converting column "date" to datetime-format
-df_cars["first_reg_date"] = pd.to_datetime(df_cars["first_reg_date"])
+df_cars['first_reg_date'] = pd.to_datetime(df_cars['first_reg_date'])
 # df_cars.info()
 
 # Filtering only M1 car categories
-df_cars = df_cars[df_cars["car_cat"] == "M1"]
+df_cars = df_cars[df_cars['car_cat'] == "M1"]
+
+# Normalization of register
+df_cars['mark'] = df_cars['mark'].str.upper()
+df_cars['model'] = df_cars['model'].str.upper()
 
 # Checking duplicates
 # print(f"Rows before duplicates: {len(df_cars)}")
@@ -70,28 +74,74 @@ for col in categorical_cols:
     df_cars[col] = df_cars[col].cat.remove_unused_categories()
 
 # Filtering TOP50 list of marks and updating dictionary
-top_50 = df_cars["mark"].value_counts().nlargest(50)
 
 corrections = {
-    "VW": "VOLKSWAGEN",
-    "VOLKSWAGEN. VW": "VOLKSWAGEN",
-    "VOLKSWAGEN-VW": "VOLKSWAGEN",
-    "Volkswagen": "VOLKSWAGEN",
-    "MERCEDES-BENZ": "MERCEDES",
-    "MERCEDES BENZ": "MERCEDES",
-    "BAYER.MOT.WERKE-BMW": "BMW",
-    "DAIMLERCHRYSLER (D)": "CHRYSLER",
-    "Audi": "AUDI",
-    "FORD (D)": "FORD"
+    'VW': 'VOLKSWAGEN',
+    'VOLKSWAGEN. VW': 'VOLKSWAGEN',
+    'VOLKSWAGEN-VW': 'VOLKSWAGEN',
+    'VOLKSWAGEN-VW VOLKSWAGEN. VW': 'VOLKSWAGEN',
+    'MERCEDES-BENZ': 'MERCEDES',
+    'MERCEDES BENZ': 'MERCEDES',
+    'BAYER.MOT.WERKE-BMW': 'BMW',
+    'BMW AG': 'BMW',
+    'BMW I': 'BMW',
+    'DAIMLERCHRYSLER (D)': 'CHRYSLER',
+    'FORD (D)': 'FORD',
+    'ROVER': 'LAND ROVER',
+    'TOYOTA MEM (B)': 'TOYOTA',
+    'SKODA (CZ)': 'SKODA',
+    'SEAT (E)': 'SEAT',
+    'RENAULT/CARPOL': 'RENAULT',
+    'RENAULT (F)': 'RENAULT',
+    'VOLVO (S)': 'VOLVO',
+    'PEUGEOT (F)': 'PEUGEOT',
+    'AUDI AUDI': 'AUDI',
+    'FUJI HEAVY IND.(J)': 'SUBARU',
+    'NISSAN EUROPE (F)': 'NISSAN',
+    'MITSUBISHI (J)': 'MITSUBISHI',
+    'FORD (D) FORD': 'FORD',
+    'KIA MOTOR (ROK)': 'KIA',
+    'VOLVO (S) VOLVO': 'VOLVO',
+    'TESLA MOTORS': 'TESLA',
+    'ADAM OPEL GMBH': 'OPEL',
+    'SKODA (CZ) SKODA': 'SKODA',
+    'HYUNDAI MOTOR (ROK)': 'HYUNDAI',
+    'JAGUAR LAND ROVER LIMITED': 'LAND ROVER',
+    'OPEL OPEL': 'OPEL',
+    'BAYER.MOT.WERKE-BMW BMW': 'BMW',
+    'CITROEN (F)': 'CITROEN',
+    'B.M.W.': 'BMW',
+    'MAZDA (J)': 'MAZDA',
+    'FIAT (I)': 'FIAT',
+    'DAIMLERCHRYSLER (USA)': 'CHRYSLER',
+    'HONDA MOTOR (J)': 'HONDA',
+    'DAIMLERCHRYSLER AG': 'CHRYSLER',
+    'FORD W GMBH': 'FORD',
+    'MERCEDES-AMG': 'MERCEDES',
+    'HONDA (GB)': 'HONDA',
+    'LANDROVER': 'LAND ROVER',
+    'DAIMLER AG': 'MERCEDES',
+    'TOYOTA EUROPE (B)': 'TOYOTA',
+    'FUJI HEAVY IND. (J)': 'SUBARU',
+    'ALFA': 'ALFA ROMEO'
 }
 
-df_cars["mark"] = df_cars["mark"].replace(corrections)
-
 # Replacing "mark' values in a category column, because of the warning
+df_cars['mark'] = df_cars['mark'].astype('object')
+df_cars['mark'] = df_cars['mark'].replace(corrections)
+df_cars['mark'] = df_cars['mark'].astype('category')
 
-df_cars['mark'] = df_cars['mark'].astype('object') # Step 1
-df_cars['mark'] = df_cars['mark'].replace(corrections) # Step 2
-df_cars['mark'] = df_cars['mark'].astype('category') # Step 3
+mark_counts = df_cars['mark'].value_counts()
+threshold = 100
+rare_marks = mark_counts[mark_counts <= threshold].index.tolist()
+
+print(f"Rows before filtering of rare marks: {len(df_cars)}")
+df_cars = df_cars[~df_cars["mark"].isin(rare_marks)]
+print(f"Rows after filtering of rare marks: {len(df_cars)}")
+df_cars["mark"] = df_cars["mark"].cat.remove_unused_categories()
+
+
+top_50 = df_cars['mark'].value_counts().nlargest(50)
 print(top_50)
 
 
@@ -108,47 +158,47 @@ print(top_50)
 
 
 
-
-
-
-
-
-
-# Checking "mark" counts and deleting unnecessary ("noisy") rows
-
-mark_counts = df_cars["mark"].value_counts()
-threshold = 10
-rare_marks = mark_counts[mark_counts <= threshold].index.tolist()
-
-# print(f"Rows before filtering of rare marks: {len(df_cars)}")
-df_cars = df_cars[~df_cars["mark"].isin(rare_marks)]
-# print(f"Rows after filtering of rare marks: {len(df_cars)}")
-df_cars["mark"] = df_cars["mark"].cat.remove_unused_categories()
-
-# print(df_cars["mark"].value_counts().nsmallest(50))
-
-
-# print(df_cars["mark"].value_counts().nlargest(50))
-garbage_models = ["Nuasmeninta", "SAVOS GAMYBOS", "SAVOS" ]
-df_cars = df_cars[~df_cars["mark"].isin(garbage_models)]
-
-# Applying same logic, but for "model" column.
-# print(df_cars['model'].value_counts())
-# print(df_cars["model"].value_counts().nlargest(50))
-garbage_models = ["Nuasmeninta", "-", "---"]
-df_cars = df_cars[~df_cars["model"].isin(garbage_models)]
-
-# print(df_cars['model'].value_counts())
-model_counts = df_cars["model"].value_counts()
-# print(model_counts)
-threshold = 100
-rare_models = model_counts[model_counts <= threshold].index.tolist()
-
-# print(f"Rows before filtering of rare marks: {len(df_cars)}")
-df_cars = df_cars[~df_cars["model"].isin(rare_models)]
-# print(f"Rows after filtering of rare marks: {len(df_cars)}")
-df_cars["model"] = df_cars["model"].cat.remove_unused_categories()
-# print(df_cars['model'].value_counts())
+#
+#
+#
+#
+#
+#
+# # Checking "mark" counts and deleting unnecessary ("noisy") rows
+#
+# mark_counts = df_cars["mark"].value_counts()
+# threshold = 10
+# rare_marks = mark_counts[mark_counts <= threshold].index.tolist()
+#
+# # print(f"Rows before filtering of rare marks: {len(df_cars)}")
+# df_cars = df_cars[~df_cars["mark"].isin(rare_marks)]
+# # print(f"Rows after filtering of rare marks: {len(df_cars)}")
+# df_cars["mark"] = df_cars["mark"].cat.remove_unused_categories()
+#
+# # print(df_cars["mark"].value_counts().nsmallest(50))
+#
+#
+# # print(df_cars["mark"].value_counts().nlargest(50))
+# garbage_models = ["Nuasmeninta", "SAVOS GAMYBOS", "SAVOS" ]
+# df_cars = df_cars[~df_cars["mark"].isin(garbage_models)]
+#
+# # Applying same logic, but for "model" column.
+# # print(df_cars['model'].value_counts())
+# # print(df_cars["model"].value_counts().nlargest(50))
+# garbage_models = ["Nuasmeninta", "-", "---"]
+# df_cars = df_cars[~df_cars["model"].isin(garbage_models)]
+#
+# # print(df_cars['model'].value_counts())
+# model_counts = df_cars["model"].value_counts()
+# # print(model_counts)
+# threshold = 100
+# rare_models = model_counts[model_counts <= threshold].index.tolist()
+#
+# # print(f"Rows before filtering of rare marks: {len(df_cars)}")
+# df_cars = df_cars[~df_cars["model"].isin(rare_models)]
+# # print(f"Rows after filtering of rare marks: {len(df_cars)}")
+# # df_cars["model"] = df_cars["model"].cat.remove_unused_categories()
+# # print(df_cars['model'].value_counts())
 
 
 
