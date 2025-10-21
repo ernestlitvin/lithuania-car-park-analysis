@@ -51,11 +51,32 @@ df_cars = df_cars.rename(columns=lt_cols)
 
 # Converting column "date" to datetime-format
 df_cars["first_reg_date"] = pd.to_datetime(df_cars["first_reg_date"])
+# df_cars.info()
 
-df_cars.info()
+# Checking duplicates
+# print(f"Rows before duplicates: {len(df_cars)}")
+# df_cars.drop_duplicates(inplace=True)
+# print(f"Rows after duplicates were removed: {len(df_cars)}")
 
+# Checking "mark" counts and deleting unnecessary ("noisy") rows
+# print(df_cars["mark"].value_counts().nsmallest(50))
 
+mark_counts = df_cars["mark"].value_counts()
+threshold = 100
+rare_marks = mark_counts[mark_counts <= threshold].index.tolist()
 
+# print(f"Rows before filtering of rare marks: {len(df_cars)}")
+df_cars = df_cars[~df_cars["mark"].isin(rare_marks)]
+# print(f"Rows after filtering of rare marks: {len(df_cars)}")
+df_cars["mark"] = df_cars["mark"].cat.remove_unused_categories()
+
+# Applying same logic, but for "model" column.
+# print(df_cars['model'].value_counts())
+
+garbage_models = ['Nuasmeninta', '-']
+df_cars = df_cars[~df_cars["model"].isin(garbage_models)]
+
+print(df_cars['model'].value_counts())
 
 
 
