@@ -105,7 +105,7 @@ df_cars = df_cars[
 
 
 
-
+check mark nlargest + nsmallest, then model nlargest + nsmallest
 
 
 
