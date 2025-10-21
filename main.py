@@ -123,7 +123,9 @@ corrections = {
     'DAIMLER AG': 'MERCEDES',
     'TOYOTA EUROPE (B)': 'TOYOTA',
     'FUJI HEAVY IND. (J)': 'SUBARU',
-    'ALFA': 'ALFA ROMEO'
+    'ALFA': 'ALFA ROMEO',
+    'DS': 'CITROEN',
+    'SSANGYONG': 'SSANG YONG'
 }
 
 # Replacing "mark' values in a category column, because of the warning
@@ -131,19 +133,28 @@ df_cars['mark'] = df_cars['mark'].astype('object')
 df_cars['mark'] = df_cars['mark'].replace(corrections)
 df_cars['mark'] = df_cars['mark'].astype('category')
 
+# Adding filter to remove values, which are less than 100 counts (removing 'noisy' values)
 mark_counts = df_cars['mark'].value_counts()
 threshold = 100
 rare_marks = mark_counts[mark_counts <= threshold].index.tolist()
 
-print(f"Rows before filtering of rare marks: {len(df_cars)}")
-df_cars = df_cars[~df_cars["mark"].isin(rare_marks)]
-print(f"Rows after filtering of rare marks: {len(df_cars)}")
-df_cars["mark"] = df_cars["mark"].cat.remove_unused_categories()
+print(f'Rows before filtering of rare marks: {len(df_cars)}')
+df_cars = df_cars[~df_cars['mark'].isin(rare_marks)]
+print(f'Rows after filtering of rare marks: {len(df_cars)}')
+df_cars['mark'] = df_cars['mark'].cat.remove_unused_categories()
+
+# Removing "garbage" data
+garbage_models = ['NUASMENINTA']
+df_cars = df_cars[~df_cars['mark'].isin(garbage_models)]
+df_cars['mark'] = df_cars['mark'].cat.remove_unused_categories()
 
 
-top_50 = df_cars['mark'].value_counts().nlargest(50)
+# TOP50 CARS
+# top_50 = df_cars['mark'].value_counts()
+# print(top_50)
+
+top_50 = df_cars['model'].value_counts().nlargest(50)
 print(top_50)
-
 
 
 
