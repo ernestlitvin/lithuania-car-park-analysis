@@ -72,11 +72,39 @@ df_cars["mark"] = df_cars["mark"].cat.remove_unused_categories()
 
 # Applying same logic, but for "model" column.
 # print(df_cars['model'].value_counts())
-
-garbage_models = ['Nuasmeninta', '-']
+print(df_cars["model"].value_counts().nlargest(50))
+garbage_models = ["Nuasmeninta", "-", "---"]
 df_cars = df_cars[~df_cars["model"].isin(garbage_models)]
 
-print(df_cars['model'].value_counts())
+# print(df_cars['model'].value_counts())
+model_counts = df_cars["model"].value_counts()
+# print(model_counts)
+threshold = 100
+rare_models = model_counts[model_counts <= threshold].index.tolist()
+
+# print(f"Rows before filtering of rare marks: {len(df_cars)}")
+df_cars = df_cars[~df_cars["model"].isin(rare_models)]
+# print(f"Rows after filtering of rare marks: {len(df_cars)}")
+df_cars["model"] = df_cars["model"].cat.remove_unused_categories()
+# print(df_cars['model'].value_counts())
+
+
+
+
+
+
+# Filtering data by production year
+
+# print(df_cars["production_year"].describe())
+
+# print(f"Rows before year filter: {len(df_cars)}")
+df_cars = df_cars[
+    (df_cars["production_year"] >= 1990) | (df_cars["production_year"].isnull())
+]
+# print(f"Rows after year filter: {len(df_cars)}")
+
+
+
 
 
 
