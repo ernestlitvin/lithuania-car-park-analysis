@@ -73,7 +73,7 @@ categorical_cols = df_cars.select_dtypes(include=['category']).columns
 for col in categorical_cols:
     df_cars[col] = df_cars[col].cat.remove_unused_categories()
 
-# Filtering TOP50 list of marks and updating dictionary
+# Filtering TOP50 list of 'marks' and updating dictionary
 
 corrections = {
     'VW': 'VOLKSWAGEN',
@@ -128,7 +128,7 @@ corrections = {
     'SSANGYONG': 'SSANG YONG'
 }
 
-# Replacing "mark' values in a category column, because of the warning
+# Replacing 'mark' values in a category column, because of the warning
 df_cars['mark'] = df_cars['mark'].astype('object')
 df_cars['mark'] = df_cars['mark'].replace(corrections)
 df_cars['mark'] = df_cars['mark'].astype('category')
@@ -138,14 +138,14 @@ mark_counts = df_cars['mark'].value_counts()
 threshold = 100
 rare_marks = mark_counts[mark_counts <= threshold].index.tolist()
 
-print(f'Rows before filtering of rare marks: {len(df_cars)}')
+# print(f'Rows before filtering of rare marks: {len(df_cars)}')
 df_cars = df_cars[~df_cars['mark'].isin(rare_marks)]
-print(f'Rows after filtering of rare marks: {len(df_cars)}')
+# print(f'Rows after filtering of rare marks: {len(df_cars)}')
 df_cars['mark'] = df_cars['mark'].cat.remove_unused_categories()
 
 # Removing "garbage" data
-garbage_models = ['NUASMENINTA']
-df_cars = df_cars[~df_cars['mark'].isin(garbage_models)]
+garbage_mark = ['NUASMENINTA']
+df_cars = df_cars[~df_cars['mark'].isin(garbage_mark)]
 df_cars['mark'] = df_cars['mark'].cat.remove_unused_categories()
 
 
@@ -153,8 +153,16 @@ df_cars['mark'] = df_cars['mark'].cat.remove_unused_categories()
 # top_50 = df_cars['mark'].value_counts()
 # print(top_50)
 
-top_50 = df_cars['model'].value_counts().nlargest(50)
-print(top_50)
+# # ==================================================================================
+# # === 3.0. EXPLORATORY DATA ANALYSIS (EDA) ===
+# # ==================================================================================
+
+# df_cars.info()
+# most popular cars 'marks'
+# top3 'marks' in top3 'models'
+# car 'marks' by ages
+# amount of cars in municipalities
+# what are the most popular colors of cars in LT ?
 
 
 
@@ -228,8 +236,6 @@ df_cars = df_cars[
 
 
 
-# check mark nlargest + nsmallest, then model nlargest + nsmallest
-# replace VOLKSWAGEN. VW 86684 VOLKSWAGEN 45738 VW 155589 VOLKSWAGEN-VW         20041
 
 
 
