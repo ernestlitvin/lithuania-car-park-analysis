@@ -57,26 +57,76 @@ df_cars["first_reg_date"] = pd.to_datetime(df_cars["first_reg_date"])
 # df_cars.info()
 
 # Filtering only M1 car categories
-
-df_cars = df_cars[["car_cat"] = "M1"]
-
+df_cars = df_cars[df_cars["car_cat"] == "M1"]
 
 # Checking duplicates
 # print(f"Rows before duplicates: {len(df_cars)}")
-# df_cars.drop_duplicates(inplace=True)
+df_cars.drop_duplicates(inplace=True)
 # print(f"Rows after duplicates were removed: {len(df_cars)}")
 
+# Deleting unused columns(0)
+categorical_cols = df_cars.select_dtypes(include=['category']).columns
+for col in categorical_cols:
+    df_cars[col] = df_cars[col].cat.remove_unused_categories()
+
+# Filtering TOP50 list of marks and updating dictionary
+top_50 = df_cars["mark"].value_counts().nlargest(50)
+
+corrections = {
+    "VW": "VOLKSWAGEN",
+    "VOLKSWAGEN. VW": "VOLKSWAGEN",
+    "VOLKSWAGEN-VW": "VOLKSWAGEN",
+    "Volkswagen": "VOLKSWAGEN",
+    "MERCEDES-BENZ": "MERCEDES",
+    "MERCEDES BENZ": "MERCEDES",
+    "BAYER.MOT.WERKE-BMW": "BMW",
+    "DAIMLERCHRYSLER (D)": "CHRYSLER",
+    "Audi": "AUDI",
+    "FORD (D)": "FORD"
+}
+
+df_cars["mark"] = df_cars["mark"].replace(corrections)
+
+# Replacing "mark' values in a category column, because of the warning
+
+df_cars['mark'] = df_cars['mark'].astype('object') # Step 1
+df_cars['mark'] = df_cars['mark'].replace(corrections) # Step 2
+df_cars['mark'] = df_cars['mark'].astype('category') # Step 3
+print(top_50)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Checking "mark" counts and deleting unnecessary ("noisy") rows
-# print(df_cars["mark"].value_counts().nsmallest(50))
 
 mark_counts = df_cars["mark"].value_counts()
-threshold = 100
+threshold = 10
 rare_marks = mark_counts[mark_counts <= threshold].index.tolist()
 
 # print(f"Rows before filtering of rare marks: {len(df_cars)}")
 df_cars = df_cars[~df_cars["mark"].isin(rare_marks)]
 # print(f"Rows after filtering of rare marks: {len(df_cars)}")
 df_cars["mark"] = df_cars["mark"].cat.remove_unused_categories()
+
+# print(df_cars["mark"].value_counts().nsmallest(50))
+
 
 # print(df_cars["mark"].value_counts().nlargest(50))
 garbage_models = ["Nuasmeninta", "SAVOS GAMYBOS", "SAVOS" ]
