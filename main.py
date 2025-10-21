@@ -16,6 +16,7 @@ cols_to_use = [
     'DEGALAI',
     'GAMYBOS_METAI',
     'PIRM_REG_DATA',
+    'KATEGORIJA_KLASE',
     'SPALVA',
     'GALIA',
     'SAVIVALDYBE'
@@ -24,6 +25,7 @@ cols_to_use = [
 data_types = {
     'MARKE': 'category',
     'KOMERCINIS_PAV': 'category',
+    'KATEGORIJA_KLASE': 'category',
     'DEGALAI': 'category',
     'SPALVA': 'category',
     'SAVIVALDYBE': 'category'
@@ -43,6 +45,7 @@ lt_cols = {
     'DEGALAI': 'fuel_type',
     'GAMYBOS_METAI': 'production_year',
     'PIRM_REG_DATA': 'first_reg_date',
+    'KATEGORIJA_KLASE': "car_cat",
     'SPALVA': 'color',
     'GALIA': 'power',
     'SAVIVALDYBE': 'municipality'
@@ -52,6 +55,11 @@ df_cars = df_cars.rename(columns=lt_cols)
 # Converting column "date" to datetime-format
 df_cars["first_reg_date"] = pd.to_datetime(df_cars["first_reg_date"])
 # df_cars.info()
+
+# Filtering only M1 car categories
+
+df_cars = df_cars[["car_cat"] = "M1"]
+
 
 # Checking duplicates
 # print(f"Rows before duplicates: {len(df_cars)}")
@@ -70,9 +78,13 @@ df_cars = df_cars[~df_cars["mark"].isin(rare_marks)]
 # print(f"Rows after filtering of rare marks: {len(df_cars)}")
 df_cars["mark"] = df_cars["mark"].cat.remove_unused_categories()
 
+# print(df_cars["mark"].value_counts().nlargest(50))
+garbage_models = ["Nuasmeninta", "SAVOS GAMYBOS", "SAVOS" ]
+df_cars = df_cars[~df_cars["mark"].isin(garbage_models)]
+
 # Applying same logic, but for "model" column.
 # print(df_cars['model'].value_counts())
-print(df_cars["model"].value_counts().nlargest(50))
+# print(df_cars["model"].value_counts().nlargest(50))
 garbage_models = ["Nuasmeninta", "-", "---"]
 df_cars = df_cars[~df_cars["model"].isin(garbage_models)]
 
@@ -105,8 +117,8 @@ df_cars = df_cars[
 
 
 
-check mark nlargest + nsmallest, then model nlargest + nsmallest
-
+# check mark nlargest + nsmallest, then model nlargest + nsmallest
+# replace VOLKSWAGEN. VW 86684 VOLKSWAGEN 45738 VW 155589 VOLKSWAGEN-VW         20041
 
 
 
