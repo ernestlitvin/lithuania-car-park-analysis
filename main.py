@@ -154,16 +154,20 @@ df_cars['mark'] = df_cars['mark'].cat.remove_unused_categories()
 corrections_models = {
     'AUDI A6': 'A6',
     'AUDI A4': 'A4',
+    'AUDI A3': 'A3',
     'TOYOTA RAV4': 'RAV4',
     'TOYOTA AVENSIS': 'AVENSIS',
     'TOYOTA COROLLA': 'COROLLA',
     'TOYOTA AURIS': 'AURIS',
     'TOYOTA C-HR': 'C-HR',
-    'TOYOTA COROLLA VERSO': 'COROLLA VERSO'
-}
+    'TOYOTA YARIS': 'YARIS',
+    'TOYOTA COROLLA VERSO': 'COROLLA VERSO',
+    'TOYOTA PRIUS': 'PRIUS',
+    'NISSAN QASHQAI': 'QASHQAI',
+    'NISSAN X-TRAIL': 'X-TRAIL',
+    'HONDA CR-V': 'CR-V'
 
-df_cars_models = df_cars['model'].value_counts().nlargest(50)
-print(df_cars_models)
+}
 
 # Corrections values in 'model' column
 df_cars['model'] = df_cars['model'].astype('object')
@@ -174,8 +178,6 @@ df_cars['model'] = df_cars['model'].astype('category')
 garbage_model = ['NUASMENINTA', '-', ]
 df_cars = df_cars[~df_cars['model'].isin(garbage_model)]
 df_cars['model'] = df_cars['model'].cat.remove_unused_categories()
-
-
 
 # TOP50 CARS
 # top_50 = df_cars['mark'].value_counts()
@@ -216,21 +218,19 @@ top10_cars = pd.concat([marks_top9, other_marks])
 # plt.tight_layout()
 # plt.show()
 
-# TOP3 'Models' of TOP3 'Marks'
+# TOP3 'Models' in each TOP3 'Marks'
 
 # Find TOP3 Models:
 marks_top3 = df_cars['mark'].value_counts().head(3)
 top_3_name = marks_top3.index
 df_cars_top3_model = df_cars[df_cars['mark'].isin(top_3_name)]
-# print(df_cars_top3_model)
-
-
-
 
 df_marks_grouped = df_cars_top3_model.groupby('mark', observed=True)['model'].value_counts()
-# print(df_marks_grouped)
+df_models_top3 = df_marks_grouped.groupby('mark', observed=True).head(3)
 
+# Visualization of TOP3 'Models' in each 'Mark'
 
+df_models_top3 = df_models_top3.reset_index()
 
 
 
