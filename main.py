@@ -156,15 +156,46 @@ df_cars['mark'] = df_cars['mark'].cat.remove_unused_categories()
 # # ==================================================================================
 # # === 3.0. EXPLORATORY DATA ANALYSIS (EDA) ===
 # # ==================================================================================
+# # --- Providing basic statistics
 
-# df_cars.info()
 # most popular cars 'marks'
+
+marks_top9 = df_cars['mark'].value_counts()[:9]
+other_marks_count = df_cars['mark'].value_counts()[9:].sum()
+other_counts = {'Other': other_marks_count }
+other_marks = pd.Series(other_counts)
+
+top10_cars = pd.concat([marks_top9, other_marks])
+# print(top10_cars)
+
+# fig = plt.figure(figsize=(10, 8))
+# plt.pie(top10_cars, labels = )
+# plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # top3 'marks' in top3 'models'
 # car 'marks' by ages
 # amount of cars in municipalities
 # what are the most popular colors of cars in LT ?
 
-
+first_rows = df_cars.columns
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+# print(first_rows)
 
 
 
