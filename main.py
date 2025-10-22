@@ -158,19 +158,25 @@ df_cars['mark'] = df_cars['mark'].cat.remove_unused_categories()
 # # ==================================================================================
 # # --- Providing basic statistics
 
-# most popular cars 'marks'
+# Most popular cars 'marks' in Lithuania. Filtering TOP9 and Others
 
 marks_top9 = df_cars['mark'].value_counts()[:9]
 other_marks_count = df_cars['mark'].value_counts()[9:].sum()
 other_counts = {'Other': other_marks_count }
 other_marks = pd.Series(other_counts)
-
 top10_cars = pd.concat([marks_top9, other_marks])
-# print(top10_cars)
 
-# fig = plt.figure(figsize=(10, 8))
-# plt.pie(top10_cars, labels = )
+# Visualization of results TOP10 'pie chart'
+# fig = plt.figure(figsize=(8, 8))
+# plt.pie(top10_cars, labels = top10_cars.index, autopct='%1.1f%%')
+# plt.title('TOP10 car marks in Lithuania')
 # plt.show()
+
+# Visualization of TOP20 'bar chart'
+marks_top20 = df_cars['mark'].value_counts()[:20]
+print(marks_top20)
+
+
 
 
 
