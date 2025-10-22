@@ -175,18 +175,30 @@ top10_cars = pd.concat([marks_top9, other_marks])
 # plt.show()
 
 # Visualization of TOP20 'bar chart'
-marks_top20 = df_cars['mark'].value_counts().head(20)
-total_cars = len(df_cars)
-percentages = [f'{100 * v / total_cars:.1f}%' for v in marks_top20.values]
-plt.figure(figsize=(12, 8))
-ax = sns.barplot(x=marks_top20.values, y=marks_top20.index.astype(str), palette = "viridis", hue = marks_top20.index.astype(str), legend=False)
-plt.xlabel("Registered Cars in LT")
-plt.ylabel("Mark")
-plt.title("Top 20 Cars Marks in Lithuania")
-for i, container in enumerate(ax.containers):
-    ax.bar_label(container, labels=[percentages[i]], fontsize=9, label_type='edge', padding=5)
-plt.tight_layout()
-plt.show()
+# marks_top20 = df_cars['mark'].value_counts().head(20)
+# total_cars = len(df_cars)
+# percentages = [f'{100 * v / total_cars:.1f}%' for v in marks_top20.values]
+# plt.figure(figsize=(12, 8))
+# ax = sns.barplot(x=marks_top20.values, y=marks_top20.index.astype(str), palette = "viridis", hue = marks_top20.index.astype(str), legend=False)
+# plt.xlabel("Registered Cars in LT")
+# plt.ylabel("Mark")
+# plt.title("Top 20 Cars Marks in Lithuania")
+# for i, container in enumerate(ax.containers):
+#     ax.bar_label(container, labels=[percentages[i]], fontsize=9, label_type='edge', padding=5)
+# plt.tight_layout()
+# plt.show()
+
+# TOP3 'Models' of TOP3 'Marks'
+
+# Find TOP3 Marks:
+marks_top3 = df_cars['mark'].value_counts().head(3)
+df_cars_top3_model = df_cars[marks_top3]
+print(df_cars_top3_model)
+
+
+
+
+# print(marks_top3)
 
 
 
@@ -205,7 +217,8 @@ plt.show()
 
 
 
-# top3 'marks' in top3 'models'
+
+
 # car 'marks' by ages
 # amount of cars in municipalities
 # what are the most popular colors of cars in LT ?
