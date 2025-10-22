@@ -232,6 +232,24 @@ df_models_top3 = df_marks_grouped.groupby('mark', observed=True).head(3)
 
 df_models_top3 = df_models_top3.reset_index()
 
+# print(df_models_top3)
+df_models_top3['model'] = df_models_top3['model'].cat.remove_unused_categories()
+top_3_brands = df_models_top3['mark'].unique().tolist()
+
+fig, axes = plt.subplots(1, 3, figsize=(20, 8), sharey=True)
+fig.suptitle('TOP3 Models of TOP3 Marks in Lithuania', fontsize=20)
+
+for i, brand in enumerate(top_3_brands):
+    ax = axes[i]
+    brand_data = df_models_top3[df_models_top3['mark'] == brand]
+    sns.barplot(data=brand_data, x='model', y='count', ax=ax, palette='viridis', hue='model', legend=False)
+    ax.set_title(brand, fontsize=16)
+    ax.set_xlabel('The Count of Registered Models', fontsize=12)
+    ax.set_ylabel('')
+    ax.bar_label(ax.containers[0], label_type='edge', fontsize=10, padding=5)
+
+plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+plt.show()
 
 
 
