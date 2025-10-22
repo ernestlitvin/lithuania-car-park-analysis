@@ -173,8 +173,15 @@ top10_cars = pd.concat([marks_top9, other_marks])
 # plt.show()
 
 # Visualization of TOP20 'bar chart'
-marks_top20 = df_cars['mark'].value_counts()[:20]
-print(marks_top20)
+marks_top20 = df_cars['mark'].value_counts().head(20)
+
+plt.figure(figsize=(12, 7))
+sns.barplot(x=marks_top20.index, y=marks_top20.values, hue = marks_top20.index, palette = "Set2", legend=False)
+plt.xticks(rotation=45, ha = "right")
+plt.xlabel("Cars mark")
+plt.ylabel("Registered cars in LT")
+plt.title("Top 20 cars mark in Lithuania")
+plt.show()
 
 
 
