@@ -133,22 +133,6 @@ df_cars['mark'] = df_cars['mark'].astype('object')
 df_cars['mark'] = df_cars['mark'].replace(corrections)
 df_cars['mark'] = df_cars['mark'].astype('category')
 
-# Updating 'models' dictionary
-corrections_models = {
-    'AUDI A6': 'A6',
-    'AUDI A4': 'A4'
-}
-
-
-
-
-df_cars_models = df_cars['model'].value_counts().nlargest(50)
-print(df_cars_models)
-
-# Corrections values in 'model' column
-df_cars['model'] = df_cars['model'].astype('object')
-df_cars['model'] = df_cars['model'].replace(corrections_models)
-df_cars['model'] = df_cars['model'].astype('category')
 
 
 # Adding filter to remove values, which are less than 100 counts (removing 'noisy' values)
@@ -161,10 +145,36 @@ df_cars = df_cars[~df_cars['mark'].isin(rare_marks)]
 # print(f'Rows after filtering of rare marks: {len(df_cars)}')
 df_cars['mark'] = df_cars['mark'].cat.remove_unused_categories()
 
-# Removing "garbage" data
+# Removing "garbage" data 'mark'
 garbage_mark = ['NUASMENINTA']
 df_cars = df_cars[~df_cars['mark'].isin(garbage_mark)]
 df_cars['mark'] = df_cars['mark'].cat.remove_unused_categories()
+
+# Updating 'models' dictionary
+corrections_models = {
+    'AUDI A6': 'A6',
+    'AUDI A4': 'A4',
+    'TOYOTA RAV4': 'RAV4',
+    'TOYOTA AVENSIS': 'AVENSIS',
+    'TOYOTA COROLLA': 'COROLLA',
+    'TOYOTA AURIS': 'AURIS',
+    'TOYOTA C-HR': 'C-HR',
+    'TOYOTA COROLLA VERSO': 'COROLLA VERSO'
+}
+
+df_cars_models = df_cars['model'].value_counts().nlargest(50)
+print(df_cars_models)
+
+# Corrections values in 'model' column
+df_cars['model'] = df_cars['model'].astype('object')
+df_cars['model'] = df_cars['model'].replace(corrections_models)
+df_cars['model'] = df_cars['model'].astype('category')
+
+# Removing "garbage" data 'model'
+garbage_model = ['NUASMENINTA', '-', ]
+df_cars = df_cars[~df_cars['model'].isin(garbage_model)]
+df_cars['model'] = df_cars['model'].cat.remove_unused_categories()
+
 
 
 # TOP50 CARS
