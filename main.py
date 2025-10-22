@@ -159,28 +159,33 @@ df_cars['mark'] = df_cars['mark'].cat.remove_unused_categories()
 # # --- Providing basic statistics
 
 # Most popular cars 'marks' in Lithuania. Filtering TOP9 and Others
-
 marks_top9 = df_cars['mark'].value_counts()[:9]
 other_marks_count = df_cars['mark'].value_counts()[9:].sum()
-other_counts = {'Other': other_marks_count }
+other_counts = {'Others': other_marks_count }
 other_marks = pd.Series(other_counts)
 top10_cars = pd.concat([marks_top9, other_marks])
 
-# Visualization of results TOP10 'pie chart'
+# Visualization of results TOP10 in 'pie chart'
 # fig = plt.figure(figsize=(8, 8))
-# plt.pie(top10_cars, labels = top10_cars.index, autopct='%1.1f%%')
-# plt.title('TOP10 car marks in Lithuania')
+# plt.pie(top10_cars, labels = top10_cars.index, autopct='%1.1f%%', explode = [0,0,0,0,0,0,0,0,0,0.1])
+# centre_circle = plt.Circle((0,0), 0.70, fc='white')
+# fig = plt.gcf()
+# fig.gca().add_artist(centre_circle)
+# plt.title('TOP10 Car Marks in Lithuania')
 # plt.show()
 
 # Visualization of TOP20 'bar chart'
 marks_top20 = df_cars['mark'].value_counts().head(20)
-
-plt.figure(figsize=(12, 7))
-sns.barplot(x=marks_top20.index, y=marks_top20.values, hue = marks_top20.index, palette = "Set2", legend=False)
-plt.xticks(rotation=45, ha = "right")
-plt.xlabel("Cars mark")
-plt.ylabel("Registered cars in LT")
-plt.title("Top 20 cars mark in Lithuania")
+total_cars = len(df_cars)
+percentages = [f'{100 * v / total_cars:.1f}%' for v in marks_top20.values]
+plt.figure(figsize=(12, 8))
+ax = sns.barplot(x=marks_top20.values, y=marks_top20.index.astype(str), palette = "viridis", hue = marks_top20.index.astype(str), legend=False)
+plt.xlabel("Registered Cars in LT")
+plt.ylabel("Mark")
+plt.title("Top 20 Cars Marks in Lithuania")
+for i, container in enumerate(ax.containers):
+    ax.bar_label(container, labels=[percentages[i]], fontsize=9, label_type='edge', padding=5)
+plt.tight_layout()
 plt.show()
 
 
