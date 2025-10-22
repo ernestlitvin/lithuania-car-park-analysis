@@ -229,28 +229,67 @@ df_marks_grouped = df_cars_top3_model.groupby('mark', observed=True)['model'].va
 df_models_top3 = df_marks_grouped.groupby('mark', observed=True).head(3)
 
 # Visualization of TOP3 'Models' in each 'Mark'
+#
+# df_models_top3 = df_models_top3.reset_index()
+#
+# # print(df_models_top3)
+# df_models_top3['model'] = df_models_top3['model'].cat.remove_unused_categories()
+# top_3_brands = df_models_top3['mark'].unique().tolist()
+#
+# fig, axes = plt.subplots(1, 3, figsize=(20, 8), sharey=False)
+# fig.suptitle('TOP3 Models of TOP3 Marks in Lithuania', fontsize=20)
+#
+# for i, brand in enumerate(top_3_brands):
+#     ax = axes[i]
+#     brand_data = df_models_top3[df_models_top3['mark'] == brand]
+#     brand_data['model'] = brand_data['model'].cat.remove_unused_categories()
+#     sns.barplot(data=brand_data, x='model', y='count', ax=ax, palette='viridis', legend=False)
+#     ax.bar_label(ax.containers[0], label_type='edge', fontsize=10)
+#     ax.set_title(brand, fontsize=16)
+#     ax.set_xlabel('Model', fontsize=12)
+#     ax.tick_params(axis='x', rotation=45)
+#
+# axes[0].set_ylabel('Number of Registered Cars', fontsize=12)
+# plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+# plt.show()
 
+# Data preparation
 df_models_top3 = df_models_top3.reset_index()
-
-# print(df_models_top3)
-df_models_top3['model'] = df_models_top3['model'].cat.remove_unused_categories()
 top_3_brands = df_models_top3['mark'].unique().tolist()
 
-fig, axes = plt.subplots(1, 3, figsize=(20, 8), sharey=True)
-fig.suptitle('TOP3 Models of TOP3 Marks in Lithuania', fontsize=20)
+# --- Create the Subplots ---
+fig, axes = plt.subplots(1, 3, figsize=(20, 7))
+fig.suptitle('Top3 Models of Top3 Marks in Lithuania', fontsize=20)
 
+# --- Loop and Plot Correctly ---
 for i, brand in enumerate(top_3_brands):
     ax = axes[i]
-    brand_data = df_models_top3[df_models_top3['mark'] == brand]
-    sns.barplot(data=brand_data, x='model', y='count', ax=ax, palette='viridis', hue='model', legend=False)
+
+    brand_data = df_models_top3[df_models_top3['mark'] == brand].copy()
+
+    brand_data['model'] = brand_data['model'].cat.remove_unused_categories()
+
+    sns.barplot(
+        data=brand_data,
+        x='model',
+        y='count',
+        ax=ax,
+        palette='viridis',
+        hue='model',
+        legend=False
+    )
+
+    for container in ax.containers:
+        ax.bar_label(container, label_type='edge', fontsize=10, padding=3)
+
+    # Styling
     ax.set_title(brand, fontsize=16)
-    ax.set_xlabel('The Count of Registered Models', fontsize=12)
-    ax.set_ylabel('')
-    ax.bar_label(ax.containers[0], label_type='edge', fontsize=10, padding=5)
+    ax.set_xlabel('Model', fontsize=12)
+    ax.tick_params(axis='x', rotation=45)
 
-plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+axes[0].set_ylabel('Number of Registered Cars', fontsize=12)
+plt.tight_layout(rect=[0.03, 0.03, 1, 0.95])
 plt.show()
-
 
 
 
