@@ -133,6 +133,24 @@ df_cars['mark'] = df_cars['mark'].astype('object')
 df_cars['mark'] = df_cars['mark'].replace(corrections)
 df_cars['mark'] = df_cars['mark'].astype('category')
 
+# Updating 'models' dictionary
+corrections_models = {
+    'AUDI A6': 'A6',
+    'AUDI A4': 'A4'
+}
+
+
+
+
+df_cars_models = df_cars['model'].value_counts().nlargest(50)
+print(df_cars_models)
+
+# Corrections values in 'model' column
+df_cars['model'] = df_cars['model'].astype('object')
+df_cars['model'] = df_cars['model'].replace(corrections_models)
+df_cars['model'] = df_cars['model'].astype('category')
+
+
 # Adding filter to remove values, which are less than 100 counts (removing 'noisy' values)
 mark_counts = df_cars['mark'].value_counts()
 threshold = 100
@@ -190,15 +208,19 @@ top10_cars = pd.concat([marks_top9, other_marks])
 
 # TOP3 'Models' of TOP3 'Marks'
 
-# Find TOP3 Marks:
+# Find TOP3 Models:
 marks_top3 = df_cars['mark'].value_counts().head(3)
-df_cars_top3_model = df_cars[marks_top3]
-print(df_cars_top3_model)
+top_3_name = marks_top3.index
+df_cars_top3_model = df_cars[df_cars['mark'].isin(top_3_name)]
+# print(df_cars_top3_model)
 
 
 
 
-# print(marks_top3)
+df_marks_grouped = df_cars_top3_model.groupby('mark', observed=True)['model'].value_counts()
+# print(df_marks_grouped)
+
+
 
 
 
