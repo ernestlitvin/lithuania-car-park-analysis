@@ -181,6 +181,23 @@ df_cars = df_cars[~df_cars['municipality'].isin(garbage_municipality)]
 df_cars['municipality'] = df_cars['municipality'].astype('category')
 df_cars['municipality'] = df_cars['municipality'].cat.remove_unused_categories()
 
+# Updating 'Color' section dictionary
+
+colors_update = {
+    'PILKA': 'Grey',
+    'JUODA': 'Black',
+    'MĖLYNA': 'Blue',
+    'BALTA': 'White',
+    'RAUDONA': 'Red',
+    'ŽALIA': 'Green',
+    'RUDA': 'Brown'
+}
+
+df_cars['color'] = df_cars['color'].astype('object')
+df_cars['color'] = df_cars['color'].replace(colors_update)
+df_cars['color'] = df_cars['color'].astype('category')
+
+
 # # ==================================================================================
 # # === 3.0. EXPLORATORY DATA ANALYSIS (EDA) ===
 # # ==================================================================================
@@ -396,16 +413,69 @@ plot_data['municipality'] = plot_data['municipality'].cat.remove_unused_categori
 
 # The most popular colors of cars in LT
 
-car_colors = df_cars['color'].value_counts().reset_index()
-print(car_colors)
+# car_colors = df_cars['color'].value_counts().reset_index()
+# top7_car_colors = car_colors.head(7)
+#
+# print(top7_car_colors)
+#
+# labels = ['Grey', 'Black', 'Blue', 'White', 'Red', 'Green', 'Brown']
+# colors = ['Grey', 'Black', 'Blue', 'White', 'Red', 'Green', 'Brown']
+#
+# plt.pie(data = top7_car_colors, x = 'count', labels = labels, colors = colors, autopct='%.0f%%')
+# plt.title("Top 7 Colors of Cars in Lithuania")
+#
+# plt.show()
 
+car_colors = df_cars['color'].value_counts()
+# print(car_colors)
+top7_car_colors = car_colors.head(7).reset_index()
 
+# Creating percentages of car colors
+total_cars = len(df_cars)
+custom_labels = []
+for index, row in top7_car_colors.iterrows():
+    color_name = row['color']
+    count = row['count']
 
+    percentage = 100 * count / total_cars
+    label_text = f"{color_name}\n({percentage:.1f}%)"
+    custom_labels.append(label_text)
 
+# Visualization
 
+labels = top7_car_colors['color']
+color_map = {
+    'Grey': '#B0B0B0',
+    'Black': '#36454F',
+    'Blue': '#6495ED',
+    'White': '#F5F5F5',
+    'Red': '#F08080',
+    'Green': '#98FB98',
+    'Brown': '#D2B48C'
+}
 
+plot_labels = top7_car_colors['color']
+plot_colors = [color_map.get(label, '#808080') for label in plot_labels]
 
-# Rename 'municipality' and 'color' ?
+explode = [0.1] + [0] * 6
+
+plt.figure(figsize=(10, 8))
+wedges, texts = plt.pie(
+    top7_car_colors['count'],
+    labels=custom_labels,
+    colors=plot_colors,
+    explode=explode,
+    startangle=90,
+    wedgeprops={'edgecolor': 'white'})
+
+centre_circle = plt.Circle((0,0), 0.70, fc='white')
+fig = plt.gcf()
+fig.gca().add_artist(centre_circle)
+
+plt.title("Top 7 Colors of Cars in Lithuania (84,2% of All Auto Park)")
+plt.show()
+
+# Rename 'municipality'  ?
 
 
 
