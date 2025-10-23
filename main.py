@@ -283,13 +283,27 @@ top_3_brands = df_models_top3['mark'].unique().tolist()
 
 # Average 'age' of cars by 'marks'
 
-df_cars.info()
+# df_cars.info()
 
-# df_cars['years'] = 2025 - df_cars['production_year']
-# print(df_cars['years'].value_counts())
-# df_grouped_marks_year = df_cars.groupby('marks')[]
+# Extract year of registration, since 'production year' is almost empty
+df_cars['reg_year'] = pd.DatetimeIndex(df_cars["first_reg_date"]).year
+# Get a real 'age' of car
+df_cars['car_year'] = 2025 - df_cars['reg_year']
 
-# 1. first_reg_date
+
+car_year = df_cars['car_year'].value_counts().nlargest(50)
+# print(car_year)
+
+df_grouped_marks_year = df_cars.groupby('marks')[]
+
+
+
+
+
+
+
+
+# Count cars 0-5 / 5-10 / 10-15 / 15-20 / >20
 
 
 
