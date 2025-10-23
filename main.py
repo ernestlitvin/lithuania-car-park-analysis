@@ -294,7 +294,11 @@ df_cars['car_year'] = 2025 - df_cars['reg_year']
 car_year = df_cars['car_year'].value_counts().nlargest(50)
 # print(car_year)
 
-df_grouped_marks_year = df_cars.groupby('marks')[]
+
+df_grouped_marks_year = df_cars.groupby('mark', observed = True)['car_year'].mean()
+df_grouped_marks_year = df_grouped_marks_year.round(1).reset_index().sort_values(ascending=False, by = ['car_year'])
+
+print(df_grouped_marks_year)
 
 
 
@@ -303,7 +307,7 @@ df_grouped_marks_year = df_cars.groupby('marks')[]
 
 
 
-# Count cars 0-5 / 5-10 / 10-15 / 15-20 / >20
+# Count cars Very New (0-5y) / New (5-10y) / Middle (10-15y) / Old (15-20y) / Very old (>20y)
 
 
 
