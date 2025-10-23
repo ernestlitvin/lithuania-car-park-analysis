@@ -306,14 +306,16 @@ marks_year_top15['mark'] = marks_year_top15['mark'].cat.remove_unused_categories
 
 plt.figure(figsize=(12, 7))
 ax = sns.barplot(x = 'car_year', y = 'mark', data = marks_year_top15, hue = 'car_year', palette = "Set3", legend = False)
-ax.bar_label(ax.containers[0], fmt='%.1f years', label_type='edge', padding=5)
+
+for container in ax.containers:
+    ax.bar_label(container, fmt='%.1f years')
 
 plt.xlabel("Average Age of Car")
 plt.ylabel("Car Marks")
 plt.title("Top 15 Oldest Cars in Lithuania")
 plt.tight_layout()
-
-# plt.show()
+sns.despine()
+plt.show()
 
 
 
