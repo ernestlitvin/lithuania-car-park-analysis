@@ -355,6 +355,10 @@ df_for_plot = df_cars.dropna(subset=['car_condition'])
 
 # Visualization Count of Cars Conditions
 
+count_conditions = df_for_plot['car_condition'].value_counts().reset_index()
+print(count_conditions)
+
+
 
 
 
