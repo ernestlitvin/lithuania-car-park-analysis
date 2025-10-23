@@ -336,12 +336,27 @@ df_grouped_marks_year = df_grouped_marks_year.round(1).reset_index().sort_values
 # sns.despine()
 # plt.show()
 
-# Count cars by Age:
+# Creating labels for cars conditions:
 # Very New (0-5y) / New (5-10y) / Middle (10-15y) / Middle-Old (15-20y) / Old (>20y)
 
-df_grouped_marks_year_rounded = df_grouped_marks_year.round()
-print(df_grouped_marks_year_rounded)
-df_grouped_marks_year_rounded['condition'] =
+bins = [0,5,10,15,20,float('inf')]
+lab = ['Very New (0-5y]',
+       'New (5-10y]',
+       'Middle (10-15y]',
+       'Middle-Old (15-20y]',
+       'Very-Old (>20y)']
+
+df_cars['car_condition'] = pd.cut(df_cars['car_year'], bins=bins, labels=lab, include_lowest=True, right = True)
+
+## Drop NaN
+# print(f"Number of cars with unknown age: {df_cars['car_condition'].isnull().sum()}")
+df_for_plot = df_cars.dropna(subset=['car_condition'])
+# print(f"Number of cars without unknown age: {df_for_plot['car_condition'].isnull().sum()}")
+
+# Visualization Count of Cars Conditions
+
+
+
 
 
 
