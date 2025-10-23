@@ -377,12 +377,16 @@ df_for_plot = df_cars.dropna(subset=['car_condition'])
 # The amount of cars in municipalities and visualzation
 
 cars_per_mun = df_cars['municipality'].value_counts().reset_index()
-
 cars_per_mun_top10 = cars_per_mun.head(10)
-cars_per_mun_untop10 = cars_per_mun.tail(10)
 
+plot_data = cars_per_mun_top10.sort_values(by='count', ascending=True)
+plot_data['municipality'] = plot_data['municipality'].cat.remove_unused_categories()
+
+#TOP10 cars per municipality
 plt.figure(figsize=(12, 6))
-sns.barplot(data=cars_per_mun_top10, x='municipality', y='count', palette='viridis')
+cx = sns.barplot(data=plot_data, x='municipality', y='count', palette='magma', hue = 'municipality', legend = False)
+for container in cx.containers:
+    cx.bar_label(container)
 plt.xticks(rotation=45, ha='right')
 plt.xlabel("Municipality")
 plt.ylabel("Number of Cars")
@@ -390,6 +394,7 @@ plt.title("Top 10 Municipalities by Number of Registered Cars")
 plt.tight_layout()
 plt.show()
 
+# The most popular colors of cars in LT
 
 
 
@@ -397,7 +402,10 @@ plt.show()
 
 
 
-# what are the most popular colors of cars in LT ?
+
+
+
+
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
