@@ -299,13 +299,14 @@ df_grouped_marks_year = df_cars.groupby('mark', observed = True)['car_year'].mea
 df_grouped_marks_year = df_grouped_marks_year.round(1).reset_index().sort_values(ascending=False, by = ['car_year'])
 # print(df_grouped_marks_year)
 
-# Visualization of 'TOP20 with the oldest cars'
+# Visualization of 'TOP15 of the oldest cars'
 
 marks_year_top15 = df_grouped_marks_year.head(15).copy()
 marks_year_top15['mark'] = marks_year_top15['mark'].cat.remove_unused_categories()
+plot_order = marks_year_top15['mark'].tolist()
 
 plt.figure(figsize=(12, 7))
-ax = sns.barplot(x = 'car_year', y = 'mark', data = marks_year_top15, hue = 'car_year', palette = "Set3", legend = False)
+ax = sns.barplot(x = 'car_year', y = 'mark', data = marks_year_top15, hue = 'car_year', palette = "coolwarm", legend = False, order = plot_order)
 
 for container in ax.containers:
     ax.bar_label(container, fmt='%.1f years')
@@ -317,11 +318,24 @@ plt.tight_layout()
 sns.despine()
 plt.show()
 
+## Visualization of 'TOP15 of the newest cars'
 
+marks_year_top15 = df_grouped_marks_year.tail(15).copy()
+marks_year_top15['mark'] = marks_year_top15['mark'].cat.remove_unused_categories()
+plot_order = marks_year_top15['mark'].tolist()
 
+plt.figure(figsize=(12, 7))
+ax = sns.barplot(x = 'car_year', y = 'mark', data = marks_year_top15, hue = 'car_year', palette = "coolwarm", legend = False, order = plot_order)
 
-## Visualization of 'TOP20 with the oldest cars'
+for container in ax.containers:
+    ax.bar_label(container, fmt='%.1f years')
 
+plt.xlabel("Average Age of Car")
+plt.ylabel("Car Marks")
+plt.title("Top 15 Newest Cars in Lithuania")
+plt.tight_layout()
+sns.despine()
+plt.show()
 
 
 
