@@ -38,7 +38,6 @@ df_cars = pd.read_csv(
 )
 # --- Data Cleaning & Transformation ---
 # Renaming columns to EN language ---
-
 lt_cols = {
     'MARKE': 'mark',
     'KOMERCINIS_PAV': 'model',
@@ -74,7 +73,6 @@ for col in categorical_cols:
     df_cars[col] = df_cars[col].cat.remove_unused_categories()
 
 # Filtering TOP50 list of 'marks' and updating dictionary
-
 corrections = {
     'VW': 'VOLKSWAGEN',
     'VOLKSWAGEN. VW': 'VOLKSWAGEN',
@@ -133,8 +131,6 @@ df_cars['mark'] = df_cars['mark'].astype('object')
 df_cars['mark'] = df_cars['mark'].replace(corrections)
 df_cars['mark'] = df_cars['mark'].astype('category')
 
-
-
 # Adding filter to remove values, which are less than 100 counts (removing 'noisy' values)
 mark_counts = df_cars['mark'].value_counts()
 threshold = 100
@@ -166,7 +162,6 @@ corrections_models = {
     'NISSAN QASHQAI': 'QASHQAI',
     'NISSAN X-TRAIL': 'X-TRAIL',
     'HONDA CR-V': 'CR-V'
-
 }
 
 # Corrections values in 'model' column
@@ -179,16 +174,12 @@ garbage_model = ['NUASMENINTA', '-', ]
 df_cars = df_cars[~df_cars['model'].isin(garbage_model)]
 df_cars['model'] = df_cars['model'].cat.remove_unused_categories()
 
-# TOP50 CARS
-# top_50 = df_cars['mark'].value_counts()
-# print(top_50)
-
 # # ==================================================================================
 # # === 3.0. EXPLORATORY DATA ANALYSIS (EDA) ===
 # # ==================================================================================
 # # --- Providing basic statistics
 
-# Most popular cars 'marks' in Lithuania. Filtering TOP9 and Others
+# Most popular cars 'marks' in Lithuania. Filtering TOP9 and 'Others'
 marks_top9 = df_cars['mark'].value_counts()[:9]
 other_marks_count = df_cars['mark'].value_counts()[9:].sum()
 other_counts = {'Others': other_marks_count }
@@ -220,7 +211,7 @@ top10_cars = pd.concat([marks_top9, other_marks])
 
 # TOP3 'Models' in each TOP3 'Marks'
 
-# Find TOP3 Models:
+# Looking for TOP3 Models:
 marks_top3 = df_cars['mark'].value_counts().head(3)
 top_3_name = marks_top3.index
 df_cars_top3_model = df_cars[df_cars['mark'].isin(top_3_name)]
@@ -258,49 +249,47 @@ df_models_top3 = df_models_top3.reset_index()
 top_3_brands = df_models_top3['mark'].unique().tolist()
 
 # --- Create the Subplots ---
-fig, axes = plt.subplots(1, 3, figsize=(20, 7))
-fig.suptitle('Top3 Models of Top3 Marks in Lithuania', fontsize=20)
+# fig, axes = plt.subplots(1, 3, figsize=(20, 7))
+# fig.suptitle('Top3 Models of Top3 Marks in Lithuania', fontsize=20)
+#
+# # --- Loop and Plot Correctly ---
+# for i, brand in enumerate(top_3_brands):
+#     ax = axes[i]
+#
+#     brand_data = df_models_top3[df_models_top3['mark'] == brand].copy()
+#     brand_data['model'] = brand_data['model'].cat.remove_unused_categories()
+#
+#     sns.barplot(
+#         data=brand_data,
+#         x='model',
+#         y='count',
+#         ax=ax,
+#         palette='viridis',
+#         hue='model',
+#         legend=False
+#     )
+#
+#     for container in ax.containers:
+#         ax.bar_label(container, label_type='edge', fontsize=10, padding=3)
+#
+#     # Styling
+#     ax.set_title(brand, fontsize=16)
+#     ax.set_xlabel('Model', fontsize=12)
+#     ax.tick_params(axis='x', rotation=45)
+#
+# axes[0].set_ylabel('Number of Registered Cars', fontsize=12)
+# plt.tight_layout(rect=[0.03, 0.03, 1, 0.95])
+# plt.show()
 
-# --- Loop and Plot Correctly ---
-for i, brand in enumerate(top_3_brands):
-    ax = axes[i]
+# Average 'age' of cars by 'marks'
 
-    brand_data = df_models_top3[df_models_top3['mark'] == brand].copy()
+df_cars.info()
 
-    brand_data['model'] = brand_data['model'].cat.remove_unused_categories()
+# df_cars['years'] = 2025 - df_cars['production_year']
+# print(df_cars['years'].value_counts())
+# df_grouped_marks_year = df_cars.groupby('marks')[]
 
-    sns.barplot(
-        data=brand_data,
-        x='model',
-        y='count',
-        ax=ax,
-        palette='viridis',
-        hue='model',
-        legend=False
-    )
-
-    for container in ax.containers:
-        ax.bar_label(container, label_type='edge', fontsize=10, padding=3)
-
-    # Styling
-    ax.set_title(brand, fontsize=16)
-    ax.set_xlabel('Model', fontsize=12)
-    ax.tick_params(axis='x', rotation=45)
-
-axes[0].set_ylabel('Number of Registered Cars', fontsize=12)
-plt.tight_layout(rect=[0.03, 0.03, 1, 0.95])
-plt.show()
-
-
-
-
-
-
-
-
-
-
-
+# 1. first_reg_date
 
 
 
@@ -308,7 +297,14 @@ plt.show()
 
 
 
-# car 'marks' by ages
+
+
+
+
+
+
+
+
 # amount of cars in municipalities
 # what are the most popular colors of cars in LT ?
 
