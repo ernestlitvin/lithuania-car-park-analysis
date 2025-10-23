@@ -374,18 +374,23 @@ df_for_plot = df_cars.dropna(subset=['car_condition'])
 # plt.ylabel("Count")
 # plt.show()
 
-# The amount of cars in municipalities
-# mun_count = df_cars['municipality'].unique()
-# print(mun_count)
+# The amount of cars in municipalities and visualzation
 
 cars_per_mun = df_cars['municipality'].value_counts().reset_index()
-print(cars_per_mun.tail(10))
 
-# cars_per_mun1 = df_cars.groupby('municipality', observed = True).size()
-# print(cars_per_mun1)
+cars_per_mun_top10 = cars_per_mun.head(10)
+cars_per_mun_untop10 = cars_per_mun.tail(10)
 
-# df_cars_grouped_mun = df_cars.groupby('municipality', observed = False).value_counts()
-# print(df_cars_grouped_mun)
+plt.figure(figsize=(12, 6))
+sns.barplot(data=cars_per_mun_top10, x='municipality', y='count', palette='viridis')
+plt.xticks(rotation=45, ha='right')
+plt.xlabel("Municipality")
+plt.ylabel("Number of Cars")
+plt.title("Top 10 Municipalities by Number of Registered Cars")
+plt.tight_layout()
+plt.show()
+
+
 
 
 
