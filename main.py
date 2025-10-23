@@ -141,7 +141,7 @@ df_cars = df_cars[~df_cars['mark'].isin(rare_marks)]
 # print(f'Rows after filtering of rare marks: {len(df_cars)}')
 df_cars['mark'] = df_cars['mark'].cat.remove_unused_categories()
 
-# Removing "garbage" data 'mark'
+# Removing "garbage" data in 'mark' column
 garbage_mark = ['NUASMENINTA']
 df_cars = df_cars[~df_cars['mark'].isin(garbage_mark)]
 df_cars['mark'] = df_cars['mark'].cat.remove_unused_categories()
@@ -169,10 +169,17 @@ df_cars['model'] = df_cars['model'].astype('object')
 df_cars['model'] = df_cars['model'].replace(corrections_models)
 df_cars['model'] = df_cars['model'].astype('category')
 
-# Removing "garbage" data 'model'
+# Removing "garbage" data in 'model' column
 garbage_model = ['NUASMENINTA', '-', ]
 df_cars = df_cars[~df_cars['model'].isin(garbage_model)]
 df_cars['model'] = df_cars['model'].cat.remove_unused_categories()
+
+# Removing "garbage" data in 'municipality' column
+df_cars['municipality'] = df_cars['municipality'].str.strip()
+garbage_municipality = ['ČEKIJA.', 'LATVIJA.', 'BALTARUSIJA.', 'JUNGTINĖ KARALYSTĖ.', 'KANADA.']
+df_cars = df_cars[~df_cars['municipality'].isin(garbage_municipality)]
+df_cars['municipality'] = df_cars['municipality'].astype('category')
+df_cars['municipality'] = df_cars['municipality'].cat.remove_unused_categories()
 
 # # ==================================================================================
 # # === 3.0. EXPLORATORY DATA ANALYSIS (EDA) ===
@@ -371,11 +378,11 @@ df_for_plot = df_cars.dropna(subset=['car_condition'])
 # mun_count = df_cars['municipality'].unique()
 # print(mun_count)
 
-# cars_per_mun = df_cars['municipality'].value_counts()
-# print(cars_per_mun)
+cars_per_mun = df_cars['municipality'].value_counts().reset_index()
+print(cars_per_mun.tail(10))
 
-cars_per_mun1 = df_cars.groupby('municipality').count().nsmallest(10)
-print(cars_per_mun1)
+# cars_per_mun1 = df_cars.groupby('municipality', observed = True).size()
+# print(cars_per_mun1)
 
 # df_cars_grouped_mun = df_cars.groupby('municipality', observed = False).value_counts()
 # print(df_cars_grouped_mun)
@@ -385,95 +392,10 @@ print(cars_per_mun1)
 
 
 
-
-
-
 # what are the most popular colors of cars in LT ?
 
-first_rows = df_cars.columns
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
-# print(first_rows)
-
-
-
-
-
-
-
-
-
-
-
-
-#
-#
-#
-#
-#
-#
-# # Checking "mark" counts and deleting unnecessary ("noisy") rows
-#
-# mark_counts = df_cars["mark"].value_counts()
-# threshold = 10
-# rare_marks = mark_counts[mark_counts <= threshold].index.tolist()
-#
-# # print(f"Rows before filtering of rare marks: {len(df_cars)}")
-# df_cars = df_cars[~df_cars["mark"].isin(rare_marks)]
-# # print(f"Rows after filtering of rare marks: {len(df_cars)}")
-# df_cars["mark"] = df_cars["mark"].cat.remove_unused_categories()
-#
-# # print(df_cars["mark"].value_counts().nsmallest(50))
-#
-#
-# # print(df_cars["mark"].value_counts().nlargest(50))
-# garbage_models = ["Nuasmeninta", "SAVOS GAMYBOS", "SAVOS" ]
-# df_cars = df_cars[~df_cars["mark"].isin(garbage_models)]
-#
-# # Applying same logic, but for "model" column.
-# # print(df_cars['model'].value_counts())
-# # print(df_cars["model"].value_counts().nlargest(50))
-# garbage_models = ["Nuasmeninta", "-", "---"]
-# df_cars = df_cars[~df_cars["model"].isin(garbage_models)]
-#
-# # print(df_cars['model'].value_counts())
-# model_counts = df_cars["model"].value_counts()
-# # print(model_counts)
-# threshold = 100
-# rare_models = model_counts[model_counts <= threshold].index.tolist()
-#
-# # print(f"Rows before filtering of rare marks: {len(df_cars)}")
-# df_cars = df_cars[~df_cars["model"].isin(rare_models)]
-# # print(f"Rows after filtering of rare marks: {len(df_cars)}")
-# # df_cars["model"] = df_cars["model"].cat.remove_unused_categories()
-# # print(df_cars['model'].value_counts())
-
-
-
-
-
-
-# Filtering data by production year
-
-# print(df_cars["production_year"].describe())
-
-# print(f"Rows before year filter: {len(df_cars)}")
-df_cars = df_cars[
-    (df_cars["production_year"] >= 1990) | (df_cars["production_year"].isnull())
-]
-# print(f"Rows after year filter: {len(df_cars)}")
-
-
-
-
-
-
-
-
-
-
-
-
 # H1: The Lithuanian car market is dominated by German brands, with Volkswagen being the single most popular make.
 # H2: The share of electric and hybrid vehicles among newly registered cars has been growing significantly in the last 5 years.
 # H3: The average age of cars in Vilnius is significantly lower than in other municipalities.
