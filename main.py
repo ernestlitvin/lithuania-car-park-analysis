@@ -290,7 +290,6 @@ df_cars['reg_year'] = pd.DatetimeIndex(df_cars["first_reg_date"]).year
 # Get a real 'age' of car
 df_cars['car_year'] = 2025 - df_cars['reg_year']
 
-
 car_year = df_cars['car_year'].value_counts().nlargest(50)
 # print(car_year)
 
@@ -301,51 +300,48 @@ df_grouped_marks_year = df_grouped_marks_year.round(1).reset_index().sort_values
 
 # Visualization of 'TOP15 of the oldest cars'
 
-marks_year_top15 = df_grouped_marks_year.head(15).copy()
-marks_year_top15['mark'] = marks_year_top15['mark'].cat.remove_unused_categories()
-plot_order = marks_year_top15['mark'].tolist()
+# marks_year_top15 = df_grouped_marks_year.head(15).copy()
+# marks_year_top15['mark'] = marks_year_top15['mark'].cat.remove_unused_categories()
+# plot_order = marks_year_top15['mark'].tolist()
+#
+# plt.figure(figsize=(12, 7))
+# ax = sns.barplot(x = 'car_year', y = 'mark', data = marks_year_top15, hue = 'car_year', palette = "coolwarm", legend = False, order = plot_order)
+#
+# for container in ax.containers:
+#     ax.bar_label(container, fmt='%.1f years')
+#
+# plt.xlabel("Average Age of Car")
+# plt.ylabel("Car Marks")
+# plt.title("Top 15 Oldest Cars in Lithuania")
+# plt.tight_layout()
+# sns.despine()
+# plt.show()
+#
+# ## Visualization of 'TOP15 of the newest cars'
+#
+# marks_year_top15 = df_grouped_marks_year.tail(15).copy()
+# marks_year_top15['mark'] = marks_year_top15['mark'].cat.remove_unused_categories()
+# plot_order = marks_year_top15['mark'].tolist()
+#
+# plt.figure(figsize=(12, 7))
+# ax = sns.barplot(x = 'car_year', y = 'mark', data = marks_year_top15, hue = 'car_year', palette = "coolwarm", legend = False, order = plot_order)
+#
+# for container in ax.containers:
+#     ax.bar_label(container, fmt='%.1f years')
+#
+# plt.xlabel("Average Age of Car")
+# plt.ylabel("Car Marks")
+# plt.title("Top 15 Newest Cars in Lithuania")
+# plt.tight_layout()
+# sns.despine()
+# plt.show()
 
-plt.figure(figsize=(12, 7))
-ax = sns.barplot(x = 'car_year', y = 'mark', data = marks_year_top15, hue = 'car_year', palette = "coolwarm", legend = False, order = plot_order)
+# Count cars by Age:
+# Very New (0-5y) / New (5-10y) / Middle (10-15y) / Middle-Old (15-20y) / Old (>20y)
 
-for container in ax.containers:
-    ax.bar_label(container, fmt='%.1f years')
-
-plt.xlabel("Average Age of Car")
-plt.ylabel("Car Marks")
-plt.title("Top 15 Oldest Cars in Lithuania")
-plt.tight_layout()
-sns.despine()
-plt.show()
-
-## Visualization of 'TOP15 of the newest cars'
-
-marks_year_top15 = df_grouped_marks_year.tail(15).copy()
-marks_year_top15['mark'] = marks_year_top15['mark'].cat.remove_unused_categories()
-plot_order = marks_year_top15['mark'].tolist()
-
-plt.figure(figsize=(12, 7))
-ax = sns.barplot(x = 'car_year', y = 'mark', data = marks_year_top15, hue = 'car_year', palette = "coolwarm", legend = False, order = plot_order)
-
-for container in ax.containers:
-    ax.bar_label(container, fmt='%.1f years')
-
-plt.xlabel("Average Age of Car")
-plt.ylabel("Car Marks")
-plt.title("Top 15 Newest Cars in Lithuania")
-plt.tight_layout()
-sns.despine()
-plt.show()
-
-
-
-
-
-
-
-
-# Count cars Very New (0-5y) / New (5-10y) / Middle (10-15y) / Middle-Old (15-20y) / Old (>20y)
-
+df_grouped_marks_year_rounded = df_grouped_marks_year.round()
+print(df_grouped_marks_year_rounded)
+df_grouped_marks_year_rounded['condition'] =
 
 
 
