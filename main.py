@@ -383,19 +383,29 @@ plot_data = cars_per_mun_top10.sort_values(by='count', ascending=True)
 plot_data['municipality'] = plot_data['municipality'].cat.remove_unused_categories()
 
 #TOP10 cars per municipality
-plt.figure(figsize=(12, 6))
-cx = sns.barplot(data=plot_data, x='municipality', y='count', palette='magma', hue = 'municipality', legend = False)
-for container in cx.containers:
-    cx.bar_label(container)
-plt.xticks(rotation=45, ha='right')
-plt.xlabel("Municipality")
-plt.ylabel("Number of Cars")
-plt.title("Top 10 Municipalities by Number of Registered Cars")
-plt.tight_layout()
-plt.show()
+# plt.figure(figsize=(12, 6))
+# cx = sns.barplot(data=plot_data, x='municipality', y='count', palette='magma', hue = 'municipality', legend = False)
+# for container in cx.containers:
+#     cx.bar_label(container)
+# plt.xticks(rotation=45, ha='right')
+# plt.xlabel("Municipality")
+# plt.ylabel("Number of Cars")
+# plt.title("Top 10 Municipalities by Number of Registered Cars")
+# plt.tight_layout()
+# plt.show()
 
 # The most popular colors of cars in LT
 
+car_colors = df_cars['color'].value_counts().reset_index()
+print(car_colors)
+
+
+
+
+
+
+
+# Rename 'municipality' and 'color' ?
 
 
 
