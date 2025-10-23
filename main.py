@@ -337,14 +337,14 @@ df_grouped_marks_year = df_grouped_marks_year.round(1).reset_index().sort_values
 # plt.show()
 
 # Creating labels for cars conditions:
-# Very New (0-5y) / New (5-10y) / Middle (10-15y) / Middle-Old (15-20y) / Old (>20y)
+# Very New (0-5y) / New (5-10y) / Middle (10-15y) / Old (15-20y) / Old (>20y)
 
 bins = [0,5,10,15,20,float('inf')]
 lab = ['Very New (0-5y]',
        'New (5-10y]',
        'Middle (10-15y]',
-       'Middle-Old (15-20y]',
-       'Very-Old (>20y)']
+       'Old (15-20y]',
+       'Very Old (>20y)']
 
 df_cars['car_condition'] = pd.cut(df_cars['car_year'], bins=bins, labels=lab, include_lowest=True, right = True)
 
@@ -354,9 +354,31 @@ df_for_plot = df_cars.dropna(subset=['car_condition'])
 # print(f"Number of cars without unknown age: {df_for_plot['car_condition'].isnull().sum()}")
 
 # Visualization Count of Cars Conditions
+# count_conditions = df_for_plot['car_condition'].value_counts().reset_index()
+#
+# plt.figure(figsize=(10, 4))
+# bx = sns.barplot(data = count_conditions, x = 'car_condition', y = 'count', hue = 'car_condition', legend = False, palette = 'icefire')
+#
+# for container in bx.containers:
+#     bx.bar_label(container)
+#
+# plt.title("Count of Cars in Lithuania by Condition")
+# plt.xlabel("Condition")
+# plt.ylabel("Count")
+# plt.show()
 
-count_conditions = df_for_plot['car_condition'].value_counts().reset_index()
-print(count_conditions)
+# The amount of cars in municipalities
+# mun_count = df_cars['municipality'].unique()
+# print(mun_count)
+
+# cars_per_mun = df_cars['municipality'].value_counts()
+# print(cars_per_mun)
+
+cars_per_mun1 = df_cars.groupby('municipality').count().nsmallest(10)
+print(cars_per_mun1)
+
+# df_cars_grouped_mun = df_cars.groupby('municipality', observed = False).value_counts()
+# print(df_cars_grouped_mun)
 
 
 
@@ -366,16 +388,6 @@ print(count_conditions)
 
 
 
-
-
-
-
-
-
-
-
-
-# amount of cars in municipalities
 # what are the most popular colors of cars in LT ?
 
 first_rows = df_cars.columns
