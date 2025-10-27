@@ -486,13 +486,27 @@ df_cars['is_german'] = df_cars['mark'].isin(german_marks)
 german_brands = df_cars['is_german'].value_counts(normalize = True)
 # print(german_brands)
 
-plot_labels = ['Other Brands', 'German Brands']
-my_explode = [0.1, 0]
-my_color = ['#98FB98', '#6495ED']
-plt.pie(german_brands, labels = plot_labels , explode = my_explode, shadow = True, colors = my_color, startangle = 90, autopct='%1.1f%%')
-plt.legend(title = 'Is Car German ?')
-plt.title('Share of German Cars in the Lithuanian Auto Park')
-plt.show()
+# plot_labels = ['Other Brands', 'German Brands']
+# my_explode = [0.1, 0]
+# my_color = ['#98FB98', '#6495ED']
+# plt.pie(german_brands, labels = plot_labels , explode = my_explode, shadow = True, colors = my_color, startangle = 90, autopct='%1.1f%%')
+# plt.legend(title = 'Is Car German ?')
+# plt.title('Share of German Cars in the Lithuanian Auto Park')
+# plt.show()
+
+# The most popular car on LT auto-park is VW, but the german brand cars are not 'dominating'. It is almost half of all cars in LT
+
+# H2: The average age of cars in Vilnius is significantly lower than in other municipalities.
+
+# vilnius_mr = df_cars[df_cars['municipality'] == 'VILNIAUS M. SAV.' & 'VILNIAUS R. SAV.']
+
+
+is_vilnius = ['VILNIAUS M. SAV.', 'VILNIAUS R. SAV.']
+df_cars['car_from_vilnius'] = df_cars['municipality'].isin(is_vilnius)
+
+# vln = df_cars['car_from_vilnius']
+# print(vln)
+
 
 
 
@@ -502,7 +516,5 @@ plt.show()
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
-# H2: The share of electric and hybrid vehicles among newly registered cars has been growing significantly in the last 5 years.
-# H3: The average age of cars in Vilnius is significantly lower than in other municipalities.
 
 # Rename 'municipality'  ?
