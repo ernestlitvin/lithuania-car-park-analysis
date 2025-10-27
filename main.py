@@ -483,11 +483,14 @@ top7_car_colors = car_colors.head(7).reset_index()
 german_marks = ['VOLKSWAGEN', 'AUDI', 'BMW', 'OPEL', 'MERCEDES', 'SMART', 'PORSCHE']
 
 df_cars['is_german'] = df_cars['mark'].isin(german_marks)
-german_brand = df_cars['is_german'].value_counts(normalize = True)
-print(german_brand)
+german_brands = df_cars['is_german'].value_counts(normalize = True)
+# print(german_brands)
 
-
-
+my_explode = [0.2, 0]
+my_color = ['#98FB98', '#6495ED']
+plt.pie(df_cars['is_german'], labels = german_brands, explode = my_explode, shadow = True, colors = my_color)
+plt.legend()
+plt.show()
 
 
 
