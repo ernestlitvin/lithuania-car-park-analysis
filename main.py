@@ -112,7 +112,6 @@ df_cars['municipality'] = df_cars['municipality'].astype('category')
 df_cars['municipality'] = df_cars['municipality'].cat.remove_unused_categories()
 
 # Updating 'Color' section dictionary
-
 df_cars['color'] = df_cars['color'].astype('object')
 df_cars['color'] = df_cars['color'].replace(colors_update)
 df_cars['color'] = df_cars['color'].astype('category')
@@ -131,12 +130,13 @@ other_marks = pd.Series(other_counts)
 top10_cars = pd.concat([marks_top9, other_marks])
 
 # Visualization of results TOP10 in 'pie chart'
+colors = ['#B0B0B0', '#36454F', '#6495ED', '#F5F5F5', '#F08080', '#98FB98', '#D2B48C', '#FFD700', '#9370DB', '#20B2AA']
 fig = plt.figure(figsize=(8, 8))
-plt.pie(top10_cars, labels = top10_cars.index, autopct='%1.1f%%', explode = [0,0,0,0,0,0,0,0,0,0.1])
+plt.pie(top10_cars, labels = top10_cars.index, autopct='%1.1f%%', colors = colors)
 centre_circle = plt.Circle((0,0), 0.70, fc='white')
 fig = plt.gcf()
 fig.gca().add_artist(centre_circle)
-plt.title('TOP10 Car Marks in Lithuania')
+plt.title('Top 10 Car Marks in Lithuania')
 plt.show()
 
 # Visualization of TOP20 'bar chart'
@@ -168,7 +168,7 @@ df_models_top3 = df_models_top3.reset_index()
 top_3_brands = df_models_top3['mark'].unique().tolist()
 
 fig, axes = plt.subplots(1, 3, figsize=(20, 7))
-fig.suptitle('Top3 Models of Top3 Marks in Lithuania', fontsize=20)
+fig.suptitle('Top 3 Models of Top 3 Marks in Lithuania', fontsize=20)
 
 for i, brand in enumerate(top_3_brands):
     ax = axes[i]
@@ -277,7 +277,7 @@ bx = sns.barplot(data = count_conditions, x = 'car_condition', y = 'count', hue 
 for container in bx.containers:
     bx.bar_label(container)
 
-plt.title("Count of Cars in Lithuania by Condition")
+plt.title("Amount of Cars in Lithuania by Condition")
 plt.xlabel("Condition")
 plt.ylabel("Count")
 plt.show()
@@ -351,7 +351,7 @@ centre_circle = plt.Circle((0,0), 0.70, fc='white')
 fig = plt.gcf()
 fig.gca().add_artist(centre_circle)
 
-plt.title("Top 7 Colors of Cars in Lithuania (84,2% of All Auto Park)")
+plt.title("Top 7 Colors of Cars in Lithuania (84.2% of All Auto Park)")
 plt.show()
 
 
