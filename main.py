@@ -431,54 +431,54 @@ car_colors = df_cars['color'].value_counts()
 top7_car_colors = car_colors.head(7).reset_index()
 
 # Creating percentages of car colors
-total_cars = len(df_cars)
-custom_labels = []
-for index, row in top7_car_colors.iterrows():
-    color_name = row['color']
-    count = row['count']
-
-    percentage = 100 * count / total_cars
-    label_text = f"{color_name}\n({percentage:.1f}%)"
-    custom_labels.append(label_text)
-
-# Visualization
-
-labels = top7_car_colors['color']
-color_map = {
-    'Grey': '#B0B0B0',
-    'Black': '#36454F',
-    'Blue': '#6495ED',
-    'White': '#F5F5F5',
-    'Red': '#F08080',
-    'Green': '#98FB98',
-    'Brown': '#D2B48C'
-}
-
-plot_labels = top7_car_colors['color']
-plot_colors = [color_map.get(label, '#808080') for label in plot_labels]
-
-explode = [0.1] + [0] * 6
-
-plt.figure(figsize=(10, 8))
-wedges, texts = plt.pie(
-    top7_car_colors['count'],
-    labels=custom_labels,
-    colors=plot_colors,
-    explode=explode,
-    startangle=90,
-    wedgeprops={'edgecolor': 'white'})
-
-centre_circle = plt.Circle((0,0), 0.70, fc='white')
-fig = plt.gcf()
-fig.gca().add_artist(centre_circle)
-
-plt.title("Top 7 Colors of Cars in Lithuania (84,2% of All Auto Park)")
-plt.show()
-
-# Rename 'municipality'  ?
+# total_cars = len(df_cars)
+# custom_labels = []
+# for index, row in top7_car_colors.iterrows():
+#     color_name = row['color']
+#     count = row['count']
+#
+#     percentage = 100 * count / total_cars
+#     label_text = f"{color_name}\n({percentage:.1f}%)"
+#     custom_labels.append(label_text)
+#
+# # Visualization
+#
+# labels = top7_car_colors['color']
+# color_map = {
+#     'Grey': '#B0B0B0',
+#     'Black': '#36454F',
+#     'Blue': '#6495ED',
+#     'White': '#F5F5F5',
+#     'Red': '#F08080',
+#     'Green': '#98FB98',
+#     'Brown': '#D2B48C'
+# }
+#
+# plot_labels = top7_car_colors['color']
+# plot_colors = [color_map.get(label, '#808080') for label in plot_labels]
+#
+# explode = [0.1] + [0] * 6
+#
+# plt.figure(figsize=(10, 8))
+# wedges, texts = plt.pie(
+#     top7_car_colors['count'],
+#     labels=custom_labels,
+#     colors=plot_colors,
+#     explode=explode,
+#     startangle=90,
+#     wedgeprops={'edgecolor': 'white'})
+#
+# centre_circle = plt.Circle((0,0), 0.70, fc='white')
+# fig = plt.gcf()
+# fig.gca().add_artist(centre_circle)
+#
+# plt.title("Top 7 Colors of Cars in Lithuania (84,2% of All Auto Park)")
+# plt.show()
 
 
+# H1: The Lithuanian car market is dominated by German brands, with Volkswagen being the single most popular make.
 
+print(marks_top9)
 
 
 
@@ -489,6 +489,7 @@ plt.show()
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
-# H1: The Lithuanian car market is dominated by German brands, with Volkswagen being the single most popular make.
 # H2: The share of electric and hybrid vehicles among newly registered cars has been growing significantly in the last 5 years.
 # H3: The average age of cars in Vilnius is significantly lower than in other municipalities.
+
+# Rename 'municipality'  ?
