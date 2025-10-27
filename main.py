@@ -512,7 +512,8 @@ age_by_mun = df_cars.groupby('car_from_vilnius')['car_year'].mean()
 age_by_mun = age_by_mun.reset_index()
 # print(age_by_mun)
 
-sns.displot(age_by_mun, kind = 'kde')
+# sns.displot(data = df_cars, x = 'car_year', hue = 'car_from_vilnius', kind = 'kde')
+sns.boxplot(data=df_cars, x='car_from_vilnius', y='car_year')
 plt.show()
 
 
