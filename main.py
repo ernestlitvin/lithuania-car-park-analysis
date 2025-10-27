@@ -478,7 +478,13 @@ top7_car_colors = car_colors.head(7).reset_index()
 
 # H1: The Lithuanian car market is dominated by German brands, with Volkswagen being the single most popular make.
 
-print(marks_top9)
+# print(marks_top9)
+
+german_marks = ['VOLKSWAGEN', 'AUDI', 'BMW', 'OPEL', 'MERCEDES', 'SMART', 'PORSCHE']
+
+df_cars['is_german'] = df_cars['mark'].isin(german_marks)
+german_brand = df_cars['is_german'].value_counts(normalize = True)
+print(german_brand)
 
 
 
