@@ -500,12 +500,26 @@ german_brands = df_cars['is_german'].value_counts(normalize = True)
 
 # vilnius_mr = df_cars[df_cars['municipality'] == 'VILNIAUS M. SAV.' & 'VILNIAUS R. SAV.']
 
-
+# Filtering cars from Vilnius and Others
 is_vilnius = ['VILNIAUS M. SAV.', 'VILNIAUS R. SAV.']
 df_cars['car_from_vilnius'] = df_cars['municipality'].isin(is_vilnius)
 
 # vln = df_cars['car_from_vilnius']
 # print(vln)
+
+age_by_mun = df_cars.groupby('car_from_vilnius')['car_year'].mean()
+
+age_by_mun = age_by_mun.reset_index()
+# print(age_by_mun)
+
+sns.displot(age_by_mun, kind = 'kde')
+plt.show()
+
+
+
+
+
+# age_from_oth =
 
 
 
