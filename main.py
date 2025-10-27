@@ -510,23 +510,36 @@ df_cars['Region'] = df_cars['car_from_vilnius'].map({True: 'Vilnius', False: 'Ot
 # print(vln)
 
 age_by_mun = df_cars.groupby('car_from_vilnius')['car_year'].mean()
-# print(age_by_mun)
+print(age_by_mun)
 
+# Visualization and checking
 x_ticks = np.arange(0, 100, 5)
 g = sns.displot(data = df_cars, x = 'car_year', hue = 'Region', kind = 'kde', common_norm=False)
 g.ax.set_xticks(x_ticks)
-g.ax.set_title('Density of Car Age: Vilnius vs. Other Regions', y=1.03)
-plt.grid(True)
+g.ax.grid(True)
+g.ax.set_title('Density of Car Age: Vilnius vs. Other Regions')
 plt.show()
 
 y_ticks = np.arange(0, 100, 5)
-ax = sns.boxplot(data=df_cars, x='region', y='car_year')
+ax = sns.boxplot(data=df_cars, x='Region', y='car_year')
 ax.set_yticks(y_ticks)
 ax.set_ylim(0, 45)
 ax.set_xlabel("Region")
 ax.set_ylabel("Car Year")
-ax.set_title("Age distribution of cars (Vilnius vs. Others)")
+ax.set_title("Age distribution of cars: Vilnius vs. Other Regions")
 plt.grid(True)
 plt.show()
 
 # Rename 'municipality'  ?
+
+# Finding: Hypothesis 2 (H2) is Confirmed
+# Average (Mean): The average age of cars in Vilnius is ~14.0 years, which is significantly lower than in other regions (~17.5 years).
+#
+# Density Plot (KDE) Analysis: The plot clearly shows a structural difference:
+# Vilnius shows a pronounced peak in the newer car segment (0-10 years), which is almost absent in other regions.
+# Conversely, "Other Regions" show a dominant peak in the older car segment (15-25 years), where they are proportionally more concentrated than in the capital.
+#
+# Boxplot Analysis: The boxplot confirms this difference is structural:
+# The median (50th percentile) age for Vilnius is at ~13 years, while the median for "Other Regions" is at ~17 years.
+# Key Finding: The median for Vilnius (~13 years) aligns with the lower quartile (25th percentile) for "Other Regions".
+# This proves that 50% of cars in Vilnius are newer than 75% of cars in the rest of the country, confirming a significant difference in the auto park's structure.
