@@ -5,6 +5,9 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
+
+from constants import corrections, corrections_models, colors_update
+
 # =============================================================================
 # === 2. DATA LOADING & PREPARATION ===
 # =============================================================================
@@ -53,7 +56,6 @@ df_cars = df_cars.rename(columns=lt_cols)
 
 # Converting column "date" to datetime-format
 df_cars['first_reg_date'] = pd.to_datetime(df_cars['first_reg_date'])
-# df_cars.info()
 
 # Filtering only M1 car categories
 df_cars = df_cars[df_cars['car_cat'] == "M1"]
@@ -71,60 +73,6 @@ df_cars.drop_duplicates(inplace=True)
 categorical_cols = df_cars.select_dtypes(include=['category']).columns
 for col in categorical_cols:
     df_cars[col] = df_cars[col].cat.remove_unused_categories()
-
-# Filtering TOP50 list of 'marks' and updating dictionary
-corrections = {
-    'VW': 'VOLKSWAGEN',
-    'VOLKSWAGEN. VW': 'VOLKSWAGEN',
-    'VOLKSWAGEN-VW': 'VOLKSWAGEN',
-    'VOLKSWAGEN-VW VOLKSWAGEN. VW': 'VOLKSWAGEN',
-    'MERCEDES-BENZ': 'MERCEDES',
-    'MERCEDES BENZ': 'MERCEDES',
-    'BAYER.MOT.WERKE-BMW': 'BMW',
-    'BMW AG': 'BMW',
-    'BMW I': 'BMW',
-    'DAIMLERCHRYSLER (D)': 'CHRYSLER',
-    'FORD (D)': 'FORD',
-    'ROVER': 'LAND ROVER',
-    'TOYOTA MEM (B)': 'TOYOTA',
-    'SKODA (CZ)': 'SKODA',
-    'SEAT (E)': 'SEAT',
-    'RENAULT/CARPOL': 'RENAULT',
-    'RENAULT (F)': 'RENAULT',
-    'VOLVO (S)': 'VOLVO',
-    'PEUGEOT (F)': 'PEUGEOT',
-    'AUDI AUDI': 'AUDI',
-    'FUJI HEAVY IND.(J)': 'SUBARU',
-    'NISSAN EUROPE (F)': 'NISSAN',
-    'MITSUBISHI (J)': 'MITSUBISHI',
-    'FORD (D) FORD': 'FORD',
-    'KIA MOTOR (ROK)': 'KIA',
-    'VOLVO (S) VOLVO': 'VOLVO',
-    'TESLA MOTORS': 'TESLA',
-    'ADAM OPEL GMBH': 'OPEL',
-    'SKODA (CZ) SKODA': 'SKODA',
-    'HYUNDAI MOTOR (ROK)': 'HYUNDAI',
-    'JAGUAR LAND ROVER LIMITED': 'LAND ROVER',
-    'OPEL OPEL': 'OPEL',
-    'BAYER.MOT.WERKE-BMW BMW': 'BMW',
-    'CITROEN (F)': 'CITROEN',
-    'B.M.W.': 'BMW',
-    'MAZDA (J)': 'MAZDA',
-    'FIAT (I)': 'FIAT',
-    'DAIMLERCHRYSLER (USA)': 'CHRYSLER',
-    'HONDA MOTOR (J)': 'HONDA',
-    'DAIMLERCHRYSLER AG': 'CHRYSLER',
-    'FORD W GMBH': 'FORD',
-    'MERCEDES-AMG': 'MERCEDES',
-    'HONDA (GB)': 'HONDA',
-    'LANDROVER': 'LAND ROVER',
-    'DAIMLER AG': 'MERCEDES',
-    'TOYOTA EUROPE (B)': 'TOYOTA',
-    'FUJI HEAVY IND. (J)': 'SUBARU',
-    'ALFA': 'ALFA ROMEO',
-    'DS': 'CITROEN',
-    'SSANGYONG': 'SSANG YONG'
-}
 
 # Replacing 'mark' values in a category column, because of the warning
 df_cars['mark'] = df_cars['mark'].astype('object')
@@ -146,24 +94,6 @@ garbage_mark = ['NUASMENINTA']
 df_cars = df_cars[~df_cars['mark'].isin(garbage_mark)]
 df_cars['mark'] = df_cars['mark'].cat.remove_unused_categories()
 
-# Updating 'models' dictionary
-corrections_models = {
-    'AUDI A6': 'A6',
-    'AUDI A4': 'A4',
-    'AUDI A3': 'A3',
-    'TOYOTA RAV4': 'RAV4',
-    'TOYOTA AVENSIS': 'AVENSIS',
-    'TOYOTA COROLLA': 'COROLLA',
-    'TOYOTA AURIS': 'AURIS',
-    'TOYOTA C-HR': 'C-HR',
-    'TOYOTA YARIS': 'YARIS',
-    'TOYOTA COROLLA VERSO': 'COROLLA VERSO',
-    'TOYOTA PRIUS': 'PRIUS',
-    'NISSAN QASHQAI': 'QASHQAI',
-    'NISSAN X-TRAIL': 'X-TRAIL',
-    'HONDA CR-V': 'CR-V'
-}
-
 # Corrections values in 'model' column
 df_cars['model'] = df_cars['model'].astype('object')
 df_cars['model'] = df_cars['model'].replace(corrections_models)
@@ -183,16 +113,6 @@ df_cars['municipality'] = df_cars['municipality'].cat.remove_unused_categories()
 
 # Updating 'Color' section dictionary
 
-colors_update = {
-    'PILKA': 'Grey',
-    'JUODA': 'Black',
-    'MĖLYNA': 'Blue',
-    'BALTA': 'White',
-    'RAUDONA': 'Red',
-    'ŽALIA': 'Green',
-    'RUDA': 'Brown'
-}
-
 df_cars['color'] = df_cars['color'].astype('object')
 df_cars['color'] = df_cars['color'].replace(colors_update)
 df_cars['color'] = df_cars['color'].astype('category')
@@ -211,30 +131,29 @@ other_marks = pd.Series(other_counts)
 top10_cars = pd.concat([marks_top9, other_marks])
 
 # Visualization of results TOP10 in 'pie chart'
-# fig = plt.figure(figsize=(8, 8))
-# plt.pie(top10_cars, labels = top10_cars.index, autopct='%1.1f%%', explode = [0,0,0,0,0,0,0,0,0,0.1])
-# centre_circle = plt.Circle((0,0), 0.70, fc='white')
-# fig = plt.gcf()
-# fig.gca().add_artist(centre_circle)
-# plt.title('TOP10 Car Marks in Lithuania')
-# plt.show()
+fig = plt.figure(figsize=(8, 8))
+plt.pie(top10_cars, labels = top10_cars.index, autopct='%1.1f%%', explode = [0,0,0,0,0,0,0,0,0,0.1])
+centre_circle = plt.Circle((0,0), 0.70, fc='white')
+fig = plt.gcf()
+fig.gca().add_artist(centre_circle)
+plt.title('TOP10 Car Marks in Lithuania')
+plt.show()
 
 # Visualization of TOP20 'bar chart'
-# marks_top20 = df_cars['mark'].value_counts().head(20)
-# total_cars = len(df_cars)
-# percentages = [f'{100 * v / total_cars:.1f}%' for v in marks_top20.values]
-# plt.figure(figsize=(12, 8))
-# ax = sns.barplot(x=marks_top20.values, y=marks_top20.index.astype(str), palette = "viridis", hue = marks_top20.index.astype(str), legend=False)
-# plt.xlabel("Registered Cars in LT")
-# plt.ylabel("Mark")
-# plt.title("Top 20 Cars Marks in Lithuania")
-# for i, container in enumerate(ax.containers):
-#     ax.bar_label(container, labels=[percentages[i]], fontsize=9, label_type='edge', padding=5)
-# plt.tight_layout()
-# plt.show()
+marks_top20 = df_cars['mark'].value_counts().head(20)
+total_cars = len(df_cars)
+percentages = [f'{100 * v / total_cars:.1f}%' for v in marks_top20.values]
+plt.figure(figsize=(12, 8))
+ax = sns.barplot(x=marks_top20.values, y=marks_top20.index.astype(str), palette = "viridis", hue = marks_top20.index.astype(str), legend=False)
+plt.xlabel("Registered Cars in LT")
+plt.ylabel("Mark")
+plt.title("Top 20 Cars Marks in Lithuania")
+for i, container in enumerate(ax.containers):
+    ax.bar_label(container, labels=[percentages[i]], fontsize=9, label_type='edge', padding=5)
+plt.tight_layout()
+plt.show()
 
 # TOP3 'Models' in each TOP3 'Marks'
-
 # Looking for TOP3 Models:
 marks_top3 = df_cars['mark'].value_counts().head(3)
 top_3_name = marks_top3.index
@@ -244,75 +163,48 @@ df_marks_grouped = df_cars_top3_model.groupby('mark', observed=True)['model'].va
 df_models_top3 = df_marks_grouped.groupby('mark', observed=True).head(3)
 
 # Visualization of TOP3 'Models' in each 'Mark'
-#
-# df_models_top3 = df_models_top3.reset_index()
-#
-# # print(df_models_top3)
-# df_models_top3['model'] = df_models_top3['model'].cat.remove_unused_categories()
-# top_3_brands = df_models_top3['mark'].unique().tolist()
-#
-# fig, axes = plt.subplots(1, 3, figsize=(20, 8), sharey=False)
-# fig.suptitle('TOP3 Models of TOP3 Marks in Lithuania', fontsize=20)
-#
-# for i, brand in enumerate(top_3_brands):
-#     ax = axes[i]
-#     brand_data = df_models_top3[df_models_top3['mark'] == brand]
-#     brand_data['model'] = brand_data['model'].cat.remove_unused_categories()
-#     sns.barplot(data=brand_data, x='model', y='count', ax=ax, palette='viridis', legend=False)
-#     ax.bar_label(ax.containers[0], label_type='edge', fontsize=10)
-#     ax.set_title(brand, fontsize=16)
-#     ax.set_xlabel('Model', fontsize=12)
-#     ax.tick_params(axis='x', rotation=45)
-#
-# axes[0].set_ylabel('Number of Registered Cars', fontsize=12)
-# plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-# plt.show()
 
-# Data preparation
 df_models_top3 = df_models_top3.reset_index()
 top_3_brands = df_models_top3['mark'].unique().tolist()
 
-# --- Create the Subplots ---
-# fig, axes = plt.subplots(1, 3, figsize=(20, 7))
-# fig.suptitle('Top3 Models of Top3 Marks in Lithuania', fontsize=20)
-#
-# # --- Loop and Plot Correctly ---
-# for i, brand in enumerate(top_3_brands):
-#     ax = axes[i]
-#
-#     brand_data = df_models_top3[df_models_top3['mark'] == brand].copy()
-#     brand_data['model'] = brand_data['model'].cat.remove_unused_categories()
-#
-#     sns.barplot(
-#         data=brand_data,
-#         x='model',
-#         y='count',
-#         ax=ax,
-#         palette='viridis',
-#         hue='model',
-#         legend=False
-#     )
-#
-#     for container in ax.containers:
-#         ax.bar_label(container, label_type='edge', fontsize=10, padding=3)
-#
-#     # Styling
-#     ax.set_title(brand, fontsize=16)
-#     ax.set_xlabel('Model', fontsize=12)
-#     ax.tick_params(axis='x', rotation=45)
-#
-# axes[0].set_ylabel('Number of Registered Cars', fontsize=12)
-# plt.tight_layout(rect=[0.03, 0.03, 1, 0.95])
-# plt.show()
+fig, axes = plt.subplots(1, 3, figsize=(20, 7))
+fig.suptitle('Top3 Models of Top3 Marks in Lithuania', fontsize=20)
+
+for i, brand in enumerate(top_3_brands):
+    ax = axes[i]
+
+    brand_data = df_models_top3[df_models_top3['mark'] == brand].copy()
+    brand_data['model'] = brand_data['model'].cat.remove_unused_categories()
+
+    sns.barplot(
+        data=brand_data,
+        x='model',
+        y='count',
+        ax=ax,
+        palette='viridis',
+        hue='model',
+        legend=False
+    )
+
+    for container in ax.containers:
+        ax.bar_label(container, label_type='edge', fontsize=10, padding=3)
+
+
+    ax.set_title(brand, fontsize=16)
+    ax.set_xlabel('Model', fontsize=12)
+    ax.tick_params(axis='x', rotation=45)
+
+axes[0].set_ylabel('Number of Registered Cars', fontsize=12)
+plt.tight_layout(rect=[0.03, 0.03, 1, 0.95])
+plt.show()
 
 # Average 'age' of cars by 'marks'
-
-# df_cars.info()
 
 # Extract year of registration, since 'production year' is almost empty
 df_cars['reg_year'] = pd.DatetimeIndex(df_cars["first_reg_date"]).year
 # Get a real 'age' of car
-df_cars['car_year'] = 2025 - df_cars['reg_year']
+current_year = pd.Timestamp.now().year
+df_cars['car_year'] = current_year - df_cars['reg_year']
 
 car_year = df_cars['car_year'].value_counts().nlargest(50)
 # print(car_year)
@@ -320,45 +212,44 @@ car_year = df_cars['car_year'].value_counts().nlargest(50)
 # Grouping 'marks' by years.
 df_grouped_marks_year = df_cars.groupby('mark', observed = True)['car_year'].mean()
 df_grouped_marks_year = df_grouped_marks_year.round(1).reset_index().sort_values(ascending=False, by = ['car_year'])
-# print(df_grouped_marks_year)
 
 # Visualization of 'TOP15 of the oldest cars'
 
-# marks_year_top15 = df_grouped_marks_year.head(15).copy()
-# marks_year_top15['mark'] = marks_year_top15['mark'].cat.remove_unused_categories()
-# plot_order = marks_year_top15['mark'].tolist()
-#
-# plt.figure(figsize=(12, 7))
-# ax = sns.barplot(x = 'car_year', y = 'mark', data = marks_year_top15, hue = 'car_year', palette = "coolwarm", legend = False, order = plot_order)
-#
-# for container in ax.containers:
-#     ax.bar_label(container, fmt='%.1f years')
-#
-# plt.xlabel("Average Age of Car")
-# plt.ylabel("Car Marks")
-# plt.title("Top 15 Oldest Cars in Lithuania")
-# plt.tight_layout()
-# sns.despine()
-# plt.show()
-#
+marks_year_top15 = df_grouped_marks_year.head(15).copy()
+marks_year_top15['mark'] = marks_year_top15['mark'].cat.remove_unused_categories()
+plot_order = marks_year_top15['mark'].tolist()
+
+plt.figure(figsize=(12, 7))
+ax = sns.barplot(x = 'car_year', y = 'mark', data = marks_year_top15, hue = 'car_year', palette = "coolwarm", legend = False, order = plot_order)
+
+for container in ax.containers:
+    ax.bar_label(container, fmt='%.1f years')
+
+plt.xlabel("Average Age of Car")
+plt.ylabel("Car Marks")
+plt.title("Top 15 Oldest Cars in Lithuania")
+plt.tight_layout()
+sns.despine()
+plt.show()
+
 # ## Visualization of 'TOP15 of the newest cars'
-#
-# marks_year_top15 = df_grouped_marks_year.tail(15).copy()
-# marks_year_top15['mark'] = marks_year_top15['mark'].cat.remove_unused_categories()
-# plot_order = marks_year_top15['mark'].tolist()
-#
-# plt.figure(figsize=(12, 7))
-# ax = sns.barplot(x = 'car_year', y = 'mark', data = marks_year_top15, hue = 'car_year', palette = "coolwarm", legend = False, order = plot_order)
-#
-# for container in ax.containers:
-#     ax.bar_label(container, fmt='%.1f years')
-#
-# plt.xlabel("Average Age of Car")
-# plt.ylabel("Car Marks")
-# plt.title("Top 15 Newest Cars in Lithuania")
-# plt.tight_layout()
-# sns.despine()
-# plt.show()
+
+marks_year_top15 = df_grouped_marks_year.tail(15).copy()
+marks_year_top15['mark'] = marks_year_top15['mark'].cat.remove_unused_categories()
+plot_order = marks_year_top15['mark'].tolist()
+
+plt.figure(figsize=(12, 7))
+ax = sns.barplot(x = 'car_year', y = 'mark', data = marks_year_top15, hue = 'car_year', palette = "coolwarm", legend = False, order = plot_order)
+
+for container in ax.containers:
+    ax.bar_label(container, fmt='%.1f years')
+
+plt.xlabel("Average Age of Car")
+plt.ylabel("Car Marks")
+plt.title("Top 15 Newest Cars in Lithuania")
+plt.tight_layout()
+sns.despine()
+plt.show()
 
 # Creating labels for cars conditions:
 # Very New (0-5y) / New (5-10y) / Middle (10-15y) / Old (15-20y) / Old (>20y)
@@ -378,18 +269,18 @@ df_for_plot = df_cars.dropna(subset=['car_condition'])
 # print(f"Number of cars without unknown age: {df_for_plot['car_condition'].isnull().sum()}")
 
 # Visualization Count of Cars Conditions
-# count_conditions = df_for_plot['car_condition'].value_counts().reset_index()
-#
-# plt.figure(figsize=(10, 4))
-# bx = sns.barplot(data = count_conditions, x = 'car_condition', y = 'count', hue = 'car_condition', legend = False, palette = 'icefire')
-#
-# for container in bx.containers:
-#     bx.bar_label(container)
-#
-# plt.title("Count of Cars in Lithuania by Condition")
-# plt.xlabel("Condition")
-# plt.ylabel("Count")
-# plt.show()
+count_conditions = df_for_plot['car_condition'].value_counts().reset_index()
+
+plt.figure(figsize=(10, 4))
+bx = sns.barplot(data = count_conditions, x = 'car_condition', y = 'count', hue = 'car_condition', legend = False, palette = 'icefire')
+
+for container in bx.containers:
+    bx.bar_label(container)
+
+plt.title("Count of Cars in Lithuania by Condition")
+plt.xlabel("Condition")
+plt.ylabel("Count")
+plt.show()
 
 # The amount of cars in municipalities and visualzation
 
@@ -400,117 +291,96 @@ plot_data = cars_per_mun_top10.sort_values(by='count', ascending=True)
 plot_data['municipality'] = plot_data['municipality'].cat.remove_unused_categories()
 
 #TOP10 cars per municipality
-# plt.figure(figsize=(12, 6))
-# cx = sns.barplot(data=plot_data, x='municipality', y='count', palette='magma', hue = 'municipality', legend = False)
-# for container in cx.containers:
-#     cx.bar_label(container)
-# plt.xticks(rotation=45, ha='right')
-# plt.xlabel("Municipality")
-# plt.ylabel("Number of Cars")
-# plt.title("Top 10 Municipalities by Number of Registered Cars")
-# plt.tight_layout()
-# plt.show()
+plt.figure(figsize=(12, 6))
+cx = sns.barplot(data=plot_data, x='municipality', y='count', palette='magma', hue = 'municipality', legend = False)
+for container in cx.containers:
+    cx.bar_label(container)
+plt.xticks(rotation=45, ha='right')
+plt.xlabel("Municipality")
+plt.ylabel("Number of Cars")
+plt.title("Top 10 Municipalities by Number of Registered Cars")
+plt.tight_layout()
+plt.show()
 
 # The most popular colors of cars in LT
-
-# car_colors = df_cars['color'].value_counts().reset_index()
-# top7_car_colors = car_colors.head(7)
-#
-# print(top7_car_colors)
-#
-# labels = ['Grey', 'Black', 'Blue', 'White', 'Red', 'Green', 'Brown']
-# colors = ['Grey', 'Black', 'Blue', 'White', 'Red', 'Green', 'Brown']
-#
-# plt.pie(data = top7_car_colors, x = 'count', labels = labels, colors = colors, autopct='%.0f%%')
-# plt.title("Top 7 Colors of Cars in Lithuania")
-#
-# plt.show()
+car_colors = df_cars['color'].value_counts().reset_index()
+top7_car_colors = car_colors.head(7)
 
 car_colors = df_cars['color'].value_counts()
-# print(car_colors)
 top7_car_colors = car_colors.head(7).reset_index()
 
 # Creating percentages of car colors
-# total_cars = len(df_cars)
-# custom_labels = []
-# for index, row in top7_car_colors.iterrows():
-#     color_name = row['color']
-#     count = row['count']
-#
-#     percentage = 100 * count / total_cars
-#     label_text = f"{color_name}\n({percentage:.1f}%)"
-#     custom_labels.append(label_text)
-#
-# # Visualization
-#
-# labels = top7_car_colors['color']
-# color_map = {
-#     'Grey': '#B0B0B0',
-#     'Black': '#36454F',
-#     'Blue': '#6495ED',
-#     'White': '#F5F5F5',
-#     'Red': '#F08080',
-#     'Green': '#98FB98',
-#     'Brown': '#D2B48C'
-# }
-#
-# plot_labels = top7_car_colors['color']
-# plot_colors = [color_map.get(label, '#808080') for label in plot_labels]
-#
-# explode = [0.1] + [0] * 6
-#
-# plt.figure(figsize=(10, 8))
-# wedges, texts = plt.pie(
-#     top7_car_colors['count'],
-#     labels=custom_labels,
-#     colors=plot_colors,
-#     explode=explode,
-#     startangle=90,
-#     wedgeprops={'edgecolor': 'white'})
-#
-# centre_circle = plt.Circle((0,0), 0.70, fc='white')
-# fig = plt.gcf()
-# fig.gca().add_artist(centre_circle)
-#
-# plt.title("Top 7 Colors of Cars in Lithuania (84,2% of All Auto Park)")
-# plt.show()
+total_cars = len(df_cars)
+custom_labels = []
+for index, row in top7_car_colors.iterrows():
+    color_name = row['color']
+    count = row['count']
 
+    percentage = 100 * count / total_cars
+    label_text = f"{color_name}\n({percentage:.1f}%)"
+    custom_labels.append(label_text)
+#
+# Visualization
+
+labels = top7_car_colors['color']
+color_map = {
+    'Grey': '#B0B0B0',
+    'Black': '#36454F',
+    'Blue': '#6495ED',
+    'White': '#F5F5F5',
+    'Red': '#F08080',
+    'Green': '#98FB98',
+    'Brown': '#D2B48C'
+}
+
+plot_labels = top7_car_colors['color']
+plot_colors = [color_map.get(label, '#808080') for label in plot_labels]
+
+explode = [0.1] + [0] * 6
+
+plt.figure(figsize=(10, 8))
+wedges, texts = plt.pie(
+    top7_car_colors['count'],
+    labels=custom_labels,
+    colors=plot_colors,
+    explode=explode,
+    startangle=90,
+    wedgeprops={'edgecolor': 'white'})
+
+centre_circle = plt.Circle((0,0), 0.70, fc='white')
+fig = plt.gcf()
+fig.gca().add_artist(centre_circle)
+
+plt.title("Top 7 Colors of Cars in Lithuania (84,2% of All Auto Park)")
+plt.show()
+
+
+# # ==================================================================================
+# # === 4. CHECKING THE HYPOTHESIS ===
+# # ==================================================================================
 
 # H1: The Lithuanian car market is dominated by German brands, with Volkswagen being the single most popular make.
 
-# print(marks_top9)
-
 german_marks = ['VOLKSWAGEN', 'AUDI', 'BMW', 'OPEL', 'MERCEDES', 'SMART', 'PORSCHE']
-
 df_cars['is_german'] = df_cars['mark'].isin(german_marks)
 german_brands = df_cars['is_german'].value_counts(normalize = True)
-# print(german_brands)
 
-# plot_labels = ['Other Brands', 'German Brands']
-# my_explode = [0.1, 0]
-# my_color = ['#98FB98', '#6495ED']
-# plt.pie(german_brands, labels = plot_labels , explode = my_explode, shadow = True, colors = my_color, startangle = 90, autopct='%1.1f%%')
-# plt.legend(title = 'Is Car German ?')
-# plt.title('Share of German Cars in the Lithuanian Auto Park')
-# plt.show()
-
+plot_labels = ['Other Brands', 'German Brands']
+my_explode = [0.1, 0]
+my_color = ['#98FB98', '#6495ED']
+plt.pie(german_brands, labels = plot_labels , explode = my_explode, shadow = True, colors = my_color, startangle = 90, autopct='%1.1f%%')
+plt.legend(title = 'Is Car German ?')
+plt.title('Share of German Cars in the Lithuanian Auto Park')
+plt.show()
 # The most popular car on LT auto-park is VW, but the german brand cars are not 'dominating'. It is almost half of all cars in LT
 
 # H2: The average age of cars in Vilnius is significantly lower than in other municipalities.
 
-# vilnius_mr = df_cars[df_cars['municipality'] == 'VILNIAUS M. SAV.' & 'VILNIAUS R. SAV.']
-
 # Filtering cars from Vilnius and Others
 is_vilnius = ['VILNIAUS M. SAV.', 'VILNIAUS R. SAV.']
 df_cars['car_from_vilnius'] = df_cars['municipality'].isin(is_vilnius)
-
 df_cars['Region'] = df_cars['car_from_vilnius'].map({True: 'Vilnius', False: 'Other Regions'})
-
-# vln = df_cars['car_from_vilnius']
-# print(vln)
-
 age_by_mun = df_cars.groupby('car_from_vilnius')['car_year'].mean()
-print(age_by_mun)
 
 # Visualization and checking
 x_ticks = np.arange(0, 100, 5)
@@ -529,8 +399,6 @@ ax.set_ylabel("Car Year")
 ax.set_title("Age distribution of cars: Vilnius vs. Other Regions")
 plt.grid(True)
 plt.show()
-
-# Rename 'municipality'  ?
 
 # Finding: Hypothesis 2 (H2) is Confirmed
 # Average (Mean): The average age of cars in Vilnius is ~14.0 years, which is significantly lower than in other regions (~17.5 years).
