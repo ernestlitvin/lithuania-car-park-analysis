@@ -486,11 +486,15 @@ df_cars['is_german'] = df_cars['mark'].isin(german_marks)
 german_brands = df_cars['is_german'].value_counts(normalize = True)
 # print(german_brands)
 
-my_explode = [0.2, 0]
+plot_labels = ['Other Brands', 'German Brands']
+my_explode = [0.1, 0]
 my_color = ['#98FB98', '#6495ED']
-plt.pie(df_cars['is_german'], labels = german_brands, explode = my_explode, shadow = True, colors = my_color)
-plt.legend()
+plt.pie(german_brands, labels = plot_labels , explode = my_explode, shadow = True, colors = my_color, startangle = 90, autopct='%1.1f%%')
+plt.legend(title = 'Is Car German ?')
+plt.title('Share of German Cars in the Lithuanian Auto Park')
 plt.show()
+
+
 
 
 
