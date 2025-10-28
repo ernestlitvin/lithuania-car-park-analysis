@@ -4,8 +4,6 @@ A data analysis project in Python exploring the structure of the Lithuanian car 
 
 ## 📊📈 Analysis and Key Findings
 
-![TOP20 Team Games, Which Played on WC](/images/top20.png)
-
 * **Top 10 Marks in Lithuania:** The most popular car in Lithuania is VW (16.6%). Almost the third part of all cars in LT is 'Other marks', which are not on the chart. 
 ![Top 10 Marks in Lithuania](images/top10carmarksppie.png)
 
@@ -18,14 +16,33 @@ A data analysis project in Python exploring the structure of the Lithuanian car 
 * **Top 7 Colors:** The most popular car color is Grey. The biggest part (84.2%) of all cars in Lithuania have 7 colors - grey, brown, green, red, white, blue, black.
 ![Top 7 Colors](images/top7col.png)
 
-* **Top 7 Colors:** The most popular car color is Grey. The biggest part (84.2%) of all cars in Lithuania have 7 colors - grey, brown, green, red, white, blue, black.
-![Top 7 Colors](images/top7col.png)
+* **Car Conditions:** According to the car conditions on the park, we can say, that the biggest part of Lithuanian cars have 'Old' (15-20y) or 'Very Old' (>20y) condition.
+![Car Conditions](images/conditions.png)
 
+* **Top 15 Oldest Cars:** The interesting thing is, that between all 'oldest' cars in Lithuania, we can find Audi. Average year of Audi car is 20.6y.
+![Top 15 Oldest Cars](images/top15oldest.png)
 
+* **Top 15 Newest Cars:** On the other hand, among the 'newest' car in Lithuania, we see such cars, as Moskvich (11.4y) - which is totally cannot be here. Also, BYD, which the most popular e-car in the world for now, is only getting popularity in Lithuania and still quite 'young' (0.1y) 
+![Top 15 Newest Cars](images/top15newest.png)
 
+* **Top 10 Municipalities:** As you might expected, the most popular municipality is Vilnius (city), the second one - Kaunas (city). The interesting part is, that Vilnius and Kaunas regions have very similar registered amount of cars as Klaipeda (city!) has.
+![Top 10 Municipalities](images/top10mun.png)
 
-* **Hypothesis 1:** The popular car on LT auto-park is VW, but the german brand cars are not 'dominating'. It is almost half of all cars in LT.
-* **Hypothesis 2:** The average age of cars in Vilnius is significantly lower (~14.0 years) than in other regions (~17.5 years), due to a larger proportion of new cars (0-10 years).
+* **HYPOTHESES:**
+
+* **Hypothesis 1:** The Lithuanian car market is dominated by German brands, with Volkswagen being the single most popular make.
+
+![Hypothesis 1](images/hyp_1.png)
+
+* The popular car on LT auto-park is VW, but the german brand cars are not 'dominating'. It is almost half of all cars in LT.
+
+* **Hypothesis 2:** The average age of cars in Vilnius is significantly lower than in other municipalities.
+
+![Hypothesis 2.1](images/hyp_21.png)
+
+![Hypothesis 2.2](images/hyp_22.png)
+
+* The average age of cars in Vilnius is significantly lower (~14.0 years) than in other regions (~17.5 years), due to a larger proportion of new cars (0-10 years).
 
 
 ### 📂 Data Source
