@@ -14,7 +14,8 @@ A data analysis project in Python exploring the structure of the Lithuanian car 
 * The average age of cars in Vilnius is **~14.0 years**, which is significantly lower than in other regions (**~17.5 years**).
 * The *Density Plot* (left plot) shows Vilnius has a large peak of new cars (0-10 years) absent elsewhere.
 * The *Box Plot* (right plot) confirms the median age in Vilnius (~13 years) is much lower than in other regions (~17 years).
-* ![Hypothesis 2.1](images/hyp_21.png) ![Hypothesis 2.2](images/hyp_22.png)
+* ![Hypothesis 2.1](images/hyp_21.png) 
+* ![Hypothesis 2.2](images/hyp_22.png)
 
 ### 📂 Data Source
 - **Open dataset about the registered road vehicles (2025-10-01).** Provided by Regitra ®️. Dataset is being updated quarterly within 10 business days after the end of the quarter. [Link to dataset](https://www.regitra.lt/imone/atviri-duomenys/#transporto-priemones)
