@@ -57,7 +57,7 @@ A data analysis project in Python exploring the structure of the Lithuanian car 
 ### Top 15 Oldest & Newest Cars (Average Age)
 * **Insight (Oldest):** Audi is among the brands with the oldest average age (20.6 years).
 * ![Top 15 Oldest Cars](images/top15oldest.png)
-* **Insight (Newest):** This chart reveals a data anomaly: "Moskvich" has an average age of 11.4 years, which is impossible. This highlights an issue in the source data's `production_year` or `first_reg_date` for older models.
+* **Insight (Newest):** This chart reveals a data anomaly: "Moskvich" has an average age of 11.4 years, which is impossible. This highlights an issue in the source data - `first_reg_date` for older models.
 * ![Top 15 Newest Cars](images/top15newest.png)
 
 ### Top 10 Municipalities
