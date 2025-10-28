@@ -1,4 +1,6 @@
-corrections = {
+# --- DICTIONARIES FOR CLEANING DATA ---
+
+CORRECTIONS = {
     'VW': 'VOLKSWAGEN',
     'VOLKSWAGEN. VW': 'VOLKSWAGEN',
     'VOLKSWAGEN-VW': 'VOLKSWAGEN',
@@ -51,7 +53,7 @@ corrections = {
     'SSANGYONG': 'SSANG YONG'
 }
 
-corrections_models = {
+CORRECTIONS_MODELS = {
     'AUDI A6': 'A6',
     'AUDI A4': 'A4',
     'AUDI A3': 'A3',
@@ -68,7 +70,7 @@ corrections_models = {
     'HONDA CR-V': 'CR-V'
 }
 
-colors_update = {
+COLORS_UPDATE = {
     'PILKA': 'Grey',
     'JUODA': 'Black',
     'MĖLYNA': 'Blue',
@@ -77,3 +79,51 @@ colors_update = {
     'ŽALIA': 'Green',
     'RUDA': 'Brown'
 }
+
+# --- LOADING DATA ---
+
+FILE_PATH = 'Atviri_TP_parko_duomenys.csv'
+
+COLS_TO_USE = [
+    'MARKE',
+    'KOMERCINIS_PAV',
+    'DEGALAI',
+    'GAMYBOS_METAI',
+    'PIRM_REG_DATA',
+    'KATEGORIJA_KLASE',
+    'SPALVA',
+    'GALIA',
+    'SAVIVALDYBE'
+]
+
+DATA_TYPES = {
+    'MARKE': 'category',
+    'KOMERCINIS_PAV': 'category',
+    'KATEGORIJA_KLASE': 'category',
+    'DEGALAI': 'category',
+    'SPALVA': 'category',
+    'SAVIVALDYBE': 'category'
+}
+
+LT_COLS = {
+    'MARKE': 'mark',
+    'KOMERCINIS_PAV': 'model',
+    'DEGALAI': 'fuel_type',
+    'GAMYBOS_METAI': 'production_year',
+    'PIRM_REG_DATA': 'first_reg_date',
+    'KATEGORIJA_KLASE': "car_cat",
+    'SPALVA': 'color',
+    'GALIA': 'power',
+    'SAVIVALDYBE': 'municipality'
+}
+
+# --- LISTS FOR FILTERING ---
+
+GARBAGE_MARK = ['NUASMENINTA']
+GARBAGE_MODEL = ['NUASMENINTA', '-']
+GARBAGE_MUNICIPALITY = ['ČEKIJA.', 'LATVIJA.', 'BALTARUSIJA.', 'JUNGTINĖ KARALYSTĖ.', 'KANADA.']
+
+# --- LISTS FOR HYPOTHESISES ---
+
+GERMAN_MARKS = ['VOLKSWAGEN', 'AUDI', 'BMW', 'OPEL', 'MERCEDES', 'SMART', 'PORSCHE']
+IS_VILNIUS_LIST = ['VILNIAUS M. SAV.', 'VILNIAUS R. SAV.']
